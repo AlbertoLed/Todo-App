@@ -7,24 +7,21 @@ export default {
   ],
   theme: {
     extend: {
-      screens: {
-        sm: '480px',
-        md: '768px',
-        lg: '976px',
-        xl: '1440px',
+
+      fontFamily: {
+        jos: ['Josefin Sans', 'sans-serif'],
       },
-      spacing: {
-        1: '6px',
-        2: '12px',
-        3: '16px',
-        4: '24px',
-        5: '32px',
-        6: '48px',
+      fontSize: {
+        xs: '.78rem',
+        sm: '.87rem',
+        base: '.9rem',
+        '2xl': '1.7rem',
       },
       colors: {
         gray: 'hsl(0, 0%, 98%)',
         grayish: {
-          100: 'hsl(236, 33%, 92%)',
+          100: '#fafafa',
+          101: 'hsl(236, 33%, 92%)',
           102: 'hsl(233, 11%, 84%)',
           104: 'hsl(236, 9%, 61%)',
           108: 'hsl(235, 19%, 35%)',
@@ -38,6 +35,7 @@ export default {
           200: 'hsl(235, 24%, 19%)',
           202: 'hsl(235, 21%, 11%)',
         },
+        blue: 'hsl(220, 98%, 61%)',
       },
     },
   },
