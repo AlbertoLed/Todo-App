@@ -1,4 +1,13 @@
+import {useState} from 'react'
+import moonIcon from '../public/images/icon-moon.svg'
+import sunIcon from '../public/images/icon-sun.svg'
+
 function App() {
+  const [isDarkThemeOn, setIsDarkThemeOn] = useState(true)
+
+  function toggleDarkTheme () {
+    setIsDarkThemeOn(prev => !prev)
+  }
 
   const backgroundImage = 
     'bg-[url("public/images/bg-mobile-light.jpg")] ' +
@@ -7,7 +16,7 @@ function App() {
     'dark:md:bg-[url("public/images/bg-desktop-dark.jpg")]'
 
   return (
-    <div className="font-jos dark">
+    <div className={`font-jos ${isDarkThemeOn && `dark`}`}>
       <main className='bg-grayish-100 dark:bg-slate-202 min-h-[100vh] grid grid-cols-1 grid-rows-1'>
 
         {/* background image */}
@@ -18,7 +27,15 @@ function App() {
         <div className="col-start-1 col-end-1 row-start-1 row-end-1 self-start justify-self-center w-[87%] max-w-[550px] mt-10 md:mt-[80px]">
 
           {/* title */}
-          <h1 className="uppercase text-white text-2xl font-bold tracking-[.3em] mb-7">Todo</h1>
+          <div className='flex justify-between mb-7'>
+            <h1 className="uppercase text-white text-2xl font-bold tracking-[.3em]">Todo</h1>
+            <button className='self-center rounded-full'>
+              <img 
+              onClick={toggleDarkTheme}
+              src={isDarkThemeOn ? sunIcon : moonIcon} alt="" />
+            </button>
+          </div>
+          
 
           {/* notes input */}
           <div className="bg-white dark:bg-slate-200 flex items-center px-5 h-12 rounded-md">
