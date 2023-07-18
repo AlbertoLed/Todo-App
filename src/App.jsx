@@ -23,12 +23,16 @@ function App() {
          <div className={`bg-cover bg-center h-[200px] md:h-[300px] w-[100%] col-start-1 col-end-1 row-start-1 row-end-1 ${backgroundImage}`}>
         </div>
 
+        {/* container for all the content */}
+        <div className="col-start-1 col-end-1 row-start-1 row-end-1 self-start justify-self-center w-[87%] max-w-[550px] mt-10 md:mt-[65px]">
 
-        <div className="col-start-1 col-end-1 row-start-1 row-end-1 self-start justify-self-center w-[87%] max-w-[550px] mt-10 md:mt-[80px]">
-
-          {/* title */}
+          {/* container for title and button */}
           <div className='flex justify-between mb-7'>
-            <h1 className="uppercase text-white text-2xl font-bold tracking-[.3em]">Todo</h1>
+            
+          {/* title */}
+            <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
+
+          {/* button to toggle theme */}
             <button className='self-center rounded-full'>
               <img 
               onClick={toggleDarkTheme}
@@ -38,14 +42,18 @@ function App() {
           
 
           {/* notes input */}
-          <div className="bg-white dark:bg-slate-200 flex items-center px-5 h-12 rounded-md">
-            <div className="w-[20px] h-[20px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
-            <input type="text" placeholder="Create a new todo..." className="text-xs w-[100%] h-[100%] ml-2 outline-none text-grayish-108 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
+          <div className="bg-white dark:bg-slate-200 flex items-center px-5 md:p-6 h-12 md:h-16 rounded-md">
+            
+            {/* circle */}
+            <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
+
+            {/* input */}
+            <input type="text" placeholder="Create a new todo..." className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
           </div>
 
           {/* todo notes */}
           <div className="bg-white dark:bg-slate-200 rounded-md my-4">
-            <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5">
+            <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
               <p>5 items left</p>
               <p>Clear Completed</p>
             </div>
@@ -58,6 +66,7 @@ function App() {
             <li>Completed</li>
           </ul>
 
+          {/* bottom text */}
           <p className="text-sm text-center text-grayish-104 dark:text-grayish-204 mt-11">Drag and drop to reorder list</p>
         </div>
       </main>

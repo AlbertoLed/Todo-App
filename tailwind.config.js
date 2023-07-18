@@ -16,6 +16,7 @@ export default {
         sm: '.87rem',
         base: '.9rem',
         '2xl': '1.7rem',
+        '4xl': '2.5rem',
       },
       colors: {
         gray: 'hsl(0, 0%, 98%)',
