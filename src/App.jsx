@@ -1,9 +1,31 @@
 import {useState} from 'react'
+import Task from './components/Task'
 import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
 
 function App() {
   const [isDarkThemeOn, setIsDarkThemeOn] = useState(true)
+
+  const data = [
+    {
+      id: 1,
+      description: 'Jog around the park 3x'
+    },
+    {
+      id: 2,
+      description: '10 minutes meditation'
+    },
+    {
+      id: 3,
+      description: 'Read for 1 hour'
+    }
+]
+  const tasks = data.map(task => (
+    <Task 
+      key={task.id}
+      description={task.description}
+    />
+  ))
 
   function toggleDarkTheme () {
     setIsDarkThemeOn(prev => !prev)
@@ -52,7 +74,9 @@ function App() {
           </div>
 
           {/* todo notes */}
-          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25">
+          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 divide-y divide-grayish-101">
+            {tasks}
+
             <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
               <p>5 items left</p>
               <p>Clear Completed</p>
