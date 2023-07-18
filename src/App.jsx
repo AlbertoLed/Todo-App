@@ -52,7 +52,7 @@ function App() {
           </div>
 
           {/* todo notes */}
-          <div className="bg-white dark:bg-slate-200 rounded-md my-4">
+          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25">
             <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
               <p>5 items left</p>
               <p>Clear Completed</p>
@@ -60,7 +60,7 @@ function App() {
           </div>
 
           {/* filter options */}
-          <ul className="bg-white dark:bg-slate-200 text-grayish-104 dark:text-grayish-204 text-base h-12 flex font-bold items-center justify-center rounded-md">
+          <ul className="bg-white dark:bg-slate-200 text-grayish-104 dark:text-grayish-204 text-base h-12 flex font-bold items-center justify-center rounded-md shadow-2xl shadow-black/10">
             <li className="text-blue">All</li>
             <li className="mx-5">Active</li>
             <li>Completed</li>
