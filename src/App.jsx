@@ -46,10 +46,10 @@ function App() {
   }
 
   const backgroundImage = 
-    'bg-[url("public/images/bg-mobile-light.jpg")] ' +
-    'md:bg-[url("public/images/bg-desktop-light.jpg")] ' + 
-    'dark:bg-[url("public/images/bg-mobile-dark.jpg")] ' +
-    'dark:md:bg-[url("public/images/bg-desktop-dark.jpg")]'
+    'bg-[url("./assets/bg-mobile-light.jpg")] ' +
+    'md:bg-[url("./assets/bg-desktop-light.jpg")] ' + 
+    'dark:bg-[url("./assets/bg-mobile-dark.jpg")] ' +
+    'dark:md:bg-[url("./assets/bg-desktop-dark.jpg")]'
 
   return (
     <div className={`font-jos ${isDarkThemeOn && `dark`}`}>
