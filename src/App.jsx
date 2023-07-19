@@ -9,21 +9,35 @@ function App() {
   const data = [
     {
       id: 1,
-      description: 'Jog around the park 3x'
+      description: 'Jog around the park 3x',
+      isCompleted: false
     },
     {
       id: 2,
-      description: '10 minutes meditation'
+      description: '10 minutes meditation',
+      isCompleted: false
     },
     {
       id: 3,
-      description: 'Read for 1 hour'
+      description: 'Read for 1 hour',
+      isCompleted: false
+    },
+    {
+      id: 4,
+      description: 'Complete online JavaScript course',
+      isCompleted: true
+    },
+    {
+      id: 5,
+      description: 'Pick up groceries',
+      isCompleted: false
     }
 ]
   const tasks = data.map(task => (
     <Task 
       key={task.id}
       description={task.description}
+      isCompleted={task.isCompleted}
     />
   ))
 
@@ -64,7 +78,7 @@ function App() {
           
 
           {/* notes input */}
-          <div className="bg-white dark:bg-slate-200 flex items-center px-5 md:p-6 h-12 md:h-16 rounded-md">
+          <div className="bg-white dark:bg-slate-200 flex items-center px-5 md:px-6 h-12 md:h-16 rounded-md">
             
             {/* circle */}
             <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
@@ -74,7 +88,7 @@ function App() {
           </div>
 
           {/* todo notes */}
-          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 divide-y divide-grayish-101">
+          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 divide-y divide-grayish-101 dark:divide-grayish-209">
             {tasks}
 
             <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">

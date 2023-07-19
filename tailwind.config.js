@@ -15,6 +15,7 @@ export default {
         xs: '.78rem',
         sm: '.87rem',
         base: '.9rem',
+        lg: '1.2rem',
         '2xl': '1.7rem',
         '4xl': '2.5rem',
       },
@@ -37,6 +38,11 @@ export default {
           202: 'hsl(235, 21%, 11%)',
         },
         blue: 'hsl(220, 98%, 61%)',
+        sky: 'hsl(192, 100%, 67%)',
+        purple: 'hsl(280, 87%, 65%)',
+      },
+      screens: {
+        'md': '633px'
       },
     },
   },
