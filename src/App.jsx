@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { onSnapshot, addDoc } from 'firebase/firestore'
-import { todoCollection } from './firebase'
+import { onSnapshot, addDoc, doc, deleteDoc } from 'firebase/firestore'
+import { todoCollection, db } from './firebase'
 import Task from './components/Task'
 import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
@@ -18,7 +18,6 @@ function App() {
         id: doc.id
       }))
       setTodoItems(todoList)
-      console.log('used snapshot')
     })
 
     return unsubscribe
@@ -31,8 +30,7 @@ function App() {
       isCompleted: false
     }
 
-    const reference = await addDoc(todoCollection, todo)
-    console.log(reference)
+    await addDoc(todoCollection, todo)
   }
 
   // Handle events
@@ -50,6 +48,10 @@ function App() {
       setCurrentInput('')
     }
   }
+  async function deleteTodo(todoId) {
+    const docRef = doc(db, 'todo', todoId)
+    await deleteDoc(docRef)
+  }
 
   // Create task components
   const tasks = todoItems.map(task => (
@@ -57,6 +59,7 @@ function App() {
       key={task.id}
       description={task.description}
       isCompleted={task.isCompleted}
+      deleteTodo={() => deleteTodo(task.id)}
     />
   ))
 
