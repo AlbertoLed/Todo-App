@@ -1,39 +1,58 @@
-import {useState} from 'react'
+import { useState, useEffect } from 'react'
+import { onSnapshot, addDoc } from 'firebase/firestore'
+import { todoCollection } from './firebase'
 import Task from './components/Task'
 import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
 
 function App() {
   const [isDarkThemeOn, setIsDarkThemeOn] = useState(true)
+  const [todoItems, setTodoItems] = useState([])
+  const [currentInput, setCurrentInput] = useState('')
 
-  const data = [
-    {
-      id: 1,
-      description: 'Jog around the park 3x',
-      isCompleted: false
-    },
-    {
-      id: 2,
-      description: '10 minutes meditation',
-      isCompleted: false
-    },
-    {
-      id: 3,
-      description: 'Read for 1 hour',
-      isCompleted: false
-    },
-    {
-      id: 4,
-      description: 'Complete online JavaScript course',
-      isCompleted: true
-    },
-    {
-      id: 5,
-      description: 'Pick up groceries',
+  // Get the todo items from firebase
+  useEffect(() => {
+    const unsubscribe = onSnapshot(todoCollection, snapshot => {
+      const todoList = snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }))
+      setTodoItems(todoList)
+      console.log('used snapshot')
+    })
+
+    return unsubscribe
+  }, [])
+
+  // Set a new todo item in firebase
+  async function createNewTodoItem() {
+    const todo = {
+      description: currentInput,
       isCompleted: false
     }
-]
-  const tasks = data.map(task => (
+
+    const reference = await addDoc(todoCollection, todo)
+    console.log(reference)
+  }
+
+  // Handle events
+  function toggleDarkTheme () {
+    setIsDarkThemeOn(prev => !prev)
+  }
+  function updateCurrentInput(e) {
+    // console.log(e.target.value)
+    setCurrentInput(e.target.value)
+  }
+  function handleEnter(e) {
+    // console.log(e.key)
+    if(e.key === 'Enter') {
+      createNewTodoItem()
+      setCurrentInput('')
+    }
+  }
+
+  // Create task components
+  const tasks = todoItems.map(task => (
     <Task 
       key={task.id}
       description={task.description}
@@ -41,10 +60,7 @@ function App() {
     />
   ))
 
-  function toggleDarkTheme () {
-    setIsDarkThemeOn(prev => !prev)
-  }
-
+  // Background files
   const backgroundImage = 
     'bg-[url("./assets/bg-mobile-light.jpg")] ' +
     'md:bg-[url("./assets/bg-desktop-light.jpg")] ' + 
@@ -66,7 +82,7 @@ function App() {
           <div className='flex justify-between mb-7'>
             
           {/* title */}
-            <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
+            <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]" onClick={createNewTodoItem}>Todo</h1>
 
           {/* button to toggle theme */}
             <button className='self-center rounded-full'>
@@ -78,13 +94,20 @@ function App() {
           
 
           {/* notes input */}
-          <div className="bg-white dark:bg-slate-200 flex items-center px-5 md:px-6 h-12 md:h-16 rounded-md">
+          <div 
+          className="bg-white dark:bg-slate-200 flex items-center px-5 md:px-6 h-12 md:h-16 rounded-md">
             
             {/* circle */}
             <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
 
             {/* input */}
-            <input type="text" placeholder="Create a new todo..." className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
+            <input 
+            type="text" 
+            placeholder="Create a new todo..." 
+            onChange={updateCurrentInput}
+            onKeyDown={handleEnter}
+            value={currentInput}
+            className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
           </div>
 
           {/* todo notes */}
