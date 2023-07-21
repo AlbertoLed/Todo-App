@@ -107,7 +107,7 @@ function App() {
             onChange={updateCurrentInput}
             onKeyDown={handleEnter}
             value={currentInput}
-            className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
+            className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 dark:text-grayish-202 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
           </div>
 
           {/* todo notes */}
