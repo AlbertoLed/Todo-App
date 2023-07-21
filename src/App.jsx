@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { onSnapshot, addDoc, doc, deleteDoc } from 'firebase/firestore'
+import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from 'firebase/firestore'
 import { todoCollection, db } from './firebase'
 import Task from './components/Task'
 import moonIcon from '../public/images/icon-moon.svg'
@@ -52,6 +52,10 @@ function App() {
     const docRef = doc(db, 'todo', todoId)
     await deleteDoc(docRef)
   }
+  async function toggleIsCompleted(todoId, isCompleted) {
+    const docRef = doc(db, 'todo', todoId)
+    await setDoc(docRef, { isCompleted: !isCompleted }, { merge: true })
+  }
 
   // Create task components
   const tasks = todoItems.map(task => (
@@ -60,6 +64,7 @@ function App() {
       description={task.description}
       isCompleted={task.isCompleted}
       deleteTodo={() => deleteTodo(task.id)}
+      toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
     />
   ))
 
@@ -85,7 +90,7 @@ function App() {
           <div className='flex justify-between mb-7'>
             
           {/* title */}
-            <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]" onClick={createNewTodoItem}>Todo</h1>
+            <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
 
           {/* button to toggle theme */}
             <button className='self-center rounded-full'>
