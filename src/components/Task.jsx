@@ -40,7 +40,7 @@ function Task(props) {
             <p 
             {...attributes}
             {...listeners}
-            className={`text-xs md:text-lg ml-2 grow hover:cursor-grab active:cursor-grabbing ${isCompleted ? `text-grayish-102 dark:text-grayish-208 line-through` : `text-grayish-108 dark:text-grayish-202`}`}>{description}</p>
+            className={`touch-manipulation text-xs md:text-lg ml-2 grow hover:cursor-grab active:cursor-grabbing ${isCompleted ? `text-grayish-102 dark:text-grayish-208 line-through` : `text-grayish-108 dark:text-grayish-202`}`}>{description}</p>
 
              {/* cross icon */}
             <div 

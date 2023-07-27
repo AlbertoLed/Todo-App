@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { DndContext, closestCenter } from '@dnd-kit/core'
+import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from 'firebase/firestore'
 import { todoCollection, db } from './firebase'
@@ -8,9 +8,17 @@ import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
 
 function App() {
-  const [isDarkThemeOn, setIsDarkThemeOn] = useState(true)
+  const [isDarkThemeOn, setIsDarkThemeOn] = useState(false)
   const [todoItems, setTodoItems] = useState([])
   const [currentInput, setCurrentInput] = useState('')
+
+  const touchSensor = useSensor(TouchSensor);
+  const mouseSensor = useSensor(MouseSensor)
+  const sensors = useSensors(
+    touchSensor,
+    mouseSensor
+    )
+
 
   // Get the todo items from firebase
   useEffect(() => {
@@ -127,6 +135,7 @@ function App() {
             <DndContext
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
+              sensors={sensors}
             >
               <SortableContext
                 items={todoItems}
