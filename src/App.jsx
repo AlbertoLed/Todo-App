@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { DndContext, closestCenter } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from 'firebase/firestore'
 import { todoCollection, db } from './firebase'
 import Task from './components/Task'
@@ -56,17 +58,19 @@ function App() {
     const docRef = doc(db, 'todo', todoId)
     await setDoc(docRef, { isCompleted: !isCompleted }, { merge: true })
   }
+  function handleDragEnd(e) {
+    const {active, over} = e
+    // console.log(active.id)
+    // console.log(over.id)
 
-  // Create task components
-  const tasks = todoItems.map(task => (
-    <Task 
-      key={task.id}
-      description={task.description}
-      isCompleted={task.isCompleted}
-      deleteTodo={() => deleteTodo(task.id)}
-      toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
-    />
-  ))
+    if(active.id !== over.id) {
+      setTodoItems(prevTodoItems => {
+        const oldIndex = prevTodoItems.findIndex(item => item.id === active.id)
+        const newIndex = prevTodoItems.findIndex(item => item.id === over.id)
+        return arrayMove(prevTodoItems, oldIndex, newIndex)
+      })
+    }
+  }
 
   // Background files
   const backgroundImage = 
@@ -120,7 +124,26 @@ function App() {
 
           {/* todo notes */}
           <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 divide-y divide-grayish-101 dark:divide-grayish-209">
-            {tasks}
+            <DndContext
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={todoItems}
+                strategy={verticalListSortingStrategy}
+              >
+                {todoItems.map(task => (
+                  <Task 
+                    key={task.id}
+                    id={task.id}
+                    description={task.description}
+                    isCompleted={task.isCompleted}
+                    deleteTodo={() => deleteTodo(task.id)}
+                    toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
 
             <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
               <p>5 items left</p>

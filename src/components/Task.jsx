@@ -1,9 +1,30 @@
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import checkIcon from '../../public/images/icon-check.svg'
 
 function Task(props) {
-    const {description, isCompleted, deleteTodo, toggleIsCompleted} = props
+    const {id, description, isCompleted, deleteTodo, toggleIsCompleted} = props
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition   
+    } = useSortable({
+        id: id
+    })
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition
+    }
+
     return(
-        <div className="h-12 md:h-16 px-5 md:px-6 flex items-center">
+        <div 
+        ref={setNodeRef}
+        style={style}
+        
+        className="h-12 md:h-16 px-5 md:px-6 flex items-center bg-white dark:bg-slate-200 rounded-md">
 
             {/* cirlce */}
             <div className={`w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208 hover:cursor-pointer  from-sky to-purple flex items-center justify-center ${isCompleted ? `border-0 bg-gradient-to-br hover:opacity-75` :`hover:bg-gradient-to-br hover:border-0`}`}
@@ -16,7 +37,10 @@ function Task(props) {
             </div>
 
             {/* text */}
-            <p className={`text-xs md:text-lg ml-2 grow ${isCompleted ? `text-grayish-102 dark:text-grayish-208 line-through` : `text-grayish-108 dark:text-grayish-202`}`}>{description}</p>
+            <p 
+            {...attributes}
+            {...listeners}
+            className={`text-xs md:text-lg ml-2 grow hover:cursor-grab active:cursor-grabbing ${isCompleted ? `text-grayish-102 dark:text-grayish-208 line-through` : `text-grayish-108 dark:text-grayish-202`}`}>{description}</p>
 
              {/* cross icon */}
             <div 
