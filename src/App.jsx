@@ -124,12 +124,18 @@ function App() {
 
             <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
               <p>5 items left</p>
+              {/* filter options */}
+              <ul className="hidden md:flex bg-white dark:bg-slate-200 text-grayish-104 dark:text-grayish-204 text-base h-12 font-bold items-center justify-center rounded-md shadow-2xl shadow-black/10">
+                <li className="text-blue">All</li>
+                <li className="mx-5">Active</li>
+                <li>Completed</li>
+              </ul>
               <p>Clear Completed</p>
             </div>
           </div>
 
           {/* filter options */}
-          <ul className="bg-white dark:bg-slate-200 text-grayish-104 dark:text-grayish-204 text-base h-12 flex font-bold items-center justify-center rounded-md shadow-2xl shadow-black/10">
+          <ul className="md:hidden bg-white dark:bg-slate-200 text-grayish-104 dark:text-grayish-204 text-base h-12 flex font-bold items-center justify-center rounded-md shadow-2xl shadow-black/10">
             <li className="text-blue">All</li>
             <li className="mx-5">Active</li>
             <li>Completed</li>
