@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
-import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from 'firebase/firestore'
+import { onSnapshot, addDoc, doc, deleteDoc, setDoc, writeBatch } from 'firebase/firestore'
 import { todoCollection, db } from './firebase'
 import Task from './components/Task'
 import moonIcon from '../public/images/icon-moon.svg'
@@ -19,7 +19,7 @@ function App() {
     mouseSensor
     )
 
-
+console.log(todoItems.map(item => item.order))
   // Get the todo items from firebase
   useEffect(() => {
     const unsubscribe = onSnapshot(todoCollection, snapshot => {
@@ -27,7 +27,7 @@ function App() {
         ...doc.data(),
         id: doc.id
       }))
-      setTodoItems(todoList)
+      setTodoItems(todoList.sort((a, b) => b.order - a.order))
     })
 
     return unsubscribe
@@ -37,7 +37,8 @@ function App() {
   async function createNewTodoItem() {
     const todo = {
       description: currentInput,
-      isCompleted: false
+      isCompleted: false,
+      order: todoItems.length
     }
 
     await addDoc(todoCollection, todo)
@@ -58,25 +59,83 @@ function App() {
       setCurrentInput('')
     }
   }
+  // Delte todo item in firebase
   async function deleteTodo(todoId) {
-    const docRef = doc(db, 'todo', todoId)
-    await deleteDoc(docRef)
+    const batch = writeBatch(db)
+
+    const deletedItemIndex = todoItems.findIndex(item => item.id === todoId)
+    const reorderItems = todoItems.slice(0, deletedItemIndex + 1)
+    const docRefs = reorderItems.map(item => doc(db, 'todo', item.id))
+    for(let i = 0; i < docRefs.length; i++) {
+      if(i + 1 === docRefs.length) {
+        batch.delete(docRefs[i])
+      }
+      else {
+        batch.update(docRefs[i], { order: reorderItems[i].order - 1 })
+      }
+    }
+
+    // const docRef = doc(db, 'todo', todoId)
+    // const deletedItemOrder = deletedItem.order
+    // batch
+    // batch.delete(docRef)
+
+    await batch.commit()
+    // console.log(reorderItems.length)
   }
+  // Toggle isCompleted property in firebase
   async function toggleIsCompleted(todoId, isCompleted) {
     const docRef = doc(db, 'todo', todoId)
     await setDoc(docRef, { isCompleted: !isCompleted }, { merge: true })
   }
-  function handleDragEnd(e) {
+  // Reorder with Drag n Drop
+  async function handleDragEnd(e) {
     const {active, over} = e
-    // console.log(active.id)
-    // console.log(over.id)
 
     if(active.id !== over.id) {
+      const oldIndex = todoItems.findIndex(item => item.id === active.id)
+      const newIndex = todoItems.findIndex(item => item.id === over.id)
+
+      // This part updates the todo items state 
+      // Without this the animation effect is ugly, son don't remove
       setTodoItems(prevTodoItems => {
-        const oldIndex = prevTodoItems.findIndex(item => item.id === active.id)
-        const newIndex = prevTodoItems.findIndex(item => item.id === over.id)
         return arrayMove(prevTodoItems, oldIndex, newIndex)
       })
+
+      // This part updates the firabes
+      const batch = writeBatch(db)
+      if(oldIndex < newIndex) {
+        const reorderItems = todoItems.slice(oldIndex, newIndex + 1)
+        const docRefs = reorderItems.map(item => doc(db, 'todo', item.id))
+
+        for(let i = 0; i <= newIndex - oldIndex; i++) {
+          if(i === 0) {
+            batch.update(docRefs[i], { order: todoItems[newIndex].order })
+            console.log(`item ${i} order ${todoItems[newIndex].order}`)
+          }
+          else {
+            batch.update(docRefs[i], { order: todoItems[oldIndex + i - 1].order })
+            console.log(`item ${i} order ${todoItems[oldIndex + i - 1].order}`)
+          }
+        }
+        console.log('yeah')
+      }
+      else {
+        const reorderItems = todoItems.slice(newIndex, oldIndex + 1)
+        const docRefs = reorderItems.map(item => doc(db, 'todo', item.id))
+
+        for(let i = 0; i <= oldIndex - newIndex; i++) {
+          if(i === oldIndex - newIndex) {
+            batch.update(docRefs[i], { order: todoItems[newIndex].order })
+            console.log(`item ${i} order ${todoItems[newIndex].order}`)
+          }
+          else {
+            batch.update(docRefs[i], { order: todoItems[newIndex + i + 1].order })
+            console.log(`item ${i} order ${todoItems[newIndex + i + 1].order}`)
+          }
+        }
+      }
+      await batch.commit()
     }
   }
 
