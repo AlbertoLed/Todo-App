@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
-import { onSnapshot, addDoc, doc, deleteDoc, setDoc, writeBatch } from 'firebase/firestore'
+import { onSnapshot, addDoc, doc, setDoc, writeBatch } from 'firebase/firestore'
 import { todoCollection, db } from './firebase'
 import Task from './components/Task'
+import Filter from './components/Filter'
 import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
 
@@ -11,7 +12,7 @@ function App() {
   const [isDarkThemeOn, setIsDarkThemeOn] = useState(false)
   const [todoItems, setTodoItems] = useState([])
   const [currentInput, setCurrentInput] = useState('')
-
+  const [filterSettings, setFilterSettings] = useState({all: true, active: false, completed: false})
   const touchSensor = useSensor(TouchSensor);
   const mouseSensor = useSensor(MouseSensor)
   const sensors = useSensors(
@@ -19,7 +20,6 @@ function App() {
     mouseSensor
     )
 
-console.log(todoItems.map(item => item.order))
   // Get the todo items from firebase
   useEffect(() => {
     const unsubscribe = onSnapshot(todoCollection, snapshot => {
@@ -59,6 +59,15 @@ console.log(todoItems.map(item => item.order))
       setCurrentInput('')
     }
   }
+  function toggleFilterSettings(filterValue) {
+    switch(filterValue) {
+      case 'all': setFilterSettings({all: true, active: false, completed: false})
+      break
+      case 'active': setFilterSettings({all: false, active: true, completed: false})
+      break
+      case 'completed': setFilterSettings({all: false, active: false, completed: true})
+    }
+  }
   // Delte todo item in firebase
   async function deleteTodo(todoId) {
     const batch = writeBatch(db)
@@ -74,14 +83,7 @@ console.log(todoItems.map(item => item.order))
         batch.update(docRefs[i], { order: reorderItems[i].order - 1 })
       }
     }
-
-    // const docRef = doc(db, 'todo', todoId)
-    // const deletedItemOrder = deletedItem.order
-    // batch
-    // batch.delete(docRef)
-
     await batch.commit()
-    // console.log(reorderItems.length)
   }
   // Toggle isCompleted property in firebase
   async function toggleIsCompleted(todoId, isCompleted) {
@@ -111,14 +113,11 @@ console.log(todoItems.map(item => item.order))
         for(let i = 0; i <= newIndex - oldIndex; i++) {
           if(i === 0) {
             batch.update(docRefs[i], { order: todoItems[newIndex].order })
-            console.log(`item ${i} order ${todoItems[newIndex].order}`)
           }
           else {
             batch.update(docRefs[i], { order: todoItems[oldIndex + i - 1].order })
-            console.log(`item ${i} order ${todoItems[oldIndex + i - 1].order}`)
           }
         }
-        console.log('yeah')
       }
       else {
         const reorderItems = todoItems.slice(newIndex, oldIndex + 1)
@@ -127,11 +126,9 @@ console.log(todoItems.map(item => item.order))
         for(let i = 0; i <= oldIndex - newIndex; i++) {
           if(i === oldIndex - newIndex) {
             batch.update(docRefs[i], { order: todoItems[newIndex].order })
-            console.log(`item ${i} order ${todoItems[newIndex].order}`)
           }
           else {
             batch.update(docRefs[i], { order: todoItems[newIndex + i + 1].order })
-            console.log(`item ${i} order ${todoItems[newIndex + i + 1].order}`)
           }
         }
       }
@@ -216,21 +213,23 @@ console.log(todoItems.map(item => item.order))
             <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
               <p>5 items left</p>
               {/* filter options */}
-              <ul className="hidden md:flex bg-white dark:bg-slate-200 text-grayish-104 dark:text-grayish-204 text-base h-12 font-bold items-center justify-center rounded-md shadow-2xl shadow-black/10">
-                <li className="text-blue">All</li>
-                <li className="mx-5">Active</li>
-                <li>Completed</li>
-              </ul>
+              <div className='hidden md:block'>
+                <Filter 
+                  filterSettings={filterSettings}
+                  toggleFilterSettings={toggleFilterSettings}
+                />
+              </div>
               <p>Clear Completed</p>
             </div>
           </div>
 
           {/* filter options */}
-          <ul className="md:hidden bg-white dark:bg-slate-200 text-grayish-104 dark:text-grayish-204 text-base h-12 flex font-bold items-center justify-center rounded-md shadow-2xl shadow-black/10">
-            <li className="text-blue">All</li>
-            <li className="mx-5">Active</li>
-            <li>Completed</li>
-          </ul>
+          <div className='block md:hidden'>
+            <Filter 
+              filterSettings={filterSettings}
+              toggleFilterSettings={toggleFilterSettings}
+            />
+          </div>
 
           {/* bottom text */}
           <p className="text-sm text-center text-grayish-104 dark:text-grayish-204 mt-11">Drag and drop to reorder list</p>
