@@ -226,7 +226,9 @@ function App() {
             </DndContext>
 
             <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
-              <p>5 items left</p>
+              {/* Calculate how many items are left */}
+              <p>{`${todoItems.filter(task => !task.isCompleted).length} items left`}</p>
+              
               {/* filter options */}
               <div className='hidden md:block'>
                 <Filter 
