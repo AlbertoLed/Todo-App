@@ -197,7 +197,22 @@ function App() {
                 items={todoItems}
                 strategy={verticalListSortingStrategy}
               >
-                {todoItems.map(task => (
+                {todoItems.filter(task => {
+                  // If filter settings is on 'All'
+                  if(filterSettings.all) {
+                    return true
+                  }
+                  // If filter settings is on 'Active'
+                  else if(filterSettings.active) {
+                    return !task.isCompleted
+                  }
+                  // If filter settings is on 'Completed'
+                  else if(filterSettings.completed) {
+                    return task.isCompleted
+                  }
+                })
+                .map(task => (
+                  // Render task components
                   <Task 
                     key={task.id}
                     id={task.id}
