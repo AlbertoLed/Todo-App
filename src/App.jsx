@@ -9,7 +9,7 @@ import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
 
 function App() {
-  const [isDarkThemeOn, setIsDarkThemeOn] = useState(false)
+  const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
   const [todoItems, setTodoItems] = useState([])
   const [currentInput, setCurrentInput] = useState('')
   const [filterSettings, setFilterSettings] = useState({all: true, active: false, completed: false})
@@ -32,6 +32,10 @@ function App() {
 
     return unsubscribe
   }, [])
+  // Save dark theme setting in local storage
+  useEffect(() => {
+    localStorage.setItem("todoDarkTheme", isDarkThemeOn)
+  }, [isDarkThemeOn])
 
   // Set a new todo item in firebase
   async function createNewTodoItem() {
