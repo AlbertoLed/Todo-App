@@ -68,6 +68,28 @@ function App() {
       case 'completed': setFilterSettings({all: false, active: false, completed: true})
     }
   }
+  // Delete all completed todos
+  async function clearCompleted() {
+    const completedItems = todoItems.filter(item => item.isCompleted)
+    if(completedItems.length !== 0) {
+      const batch = writeBatch(db)
+
+      // Delete completed todos
+      const completedDocRefs = completedItems.map(item => doc(db, 'todo', item.id))
+      completedDocRefs.forEach(docRef => batch.delete(docRef))
+
+      // Reorder uncompleted todos
+      const uncompletedItems = todoItems.filter(item => !item.isCompleted)
+      const uncompletedDocRefs = uncompletedItems.map(item => doc(db, 'todo', item.id))
+      let order = uncompletedDocRefs.length - 1;
+      uncompletedDocRefs.forEach(docRef => {
+        batch.update(docRef, {order: order})
+        order--
+      })
+
+      await batch.commit()
+    }
+  }
   // Delte todo item in firebase
   async function deleteTodo(todoId) {
     const batch = writeBatch(db)
@@ -236,7 +258,8 @@ function App() {
                   toggleFilterSettings={toggleFilterSettings}
                 />
               </div>
-              <p>Clear Completed</p>
+              <p className='hover:cursor-pointer hover:text-grayish-108 dark:hover:text-grayish-200'
+              onClick={clearCompleted}>Clear Completed</p>
             </div>
           </div>
 
