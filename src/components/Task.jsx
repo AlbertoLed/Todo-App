@@ -14,9 +14,25 @@ function Task(props) {
         id: id
     })
 
+    let boxShadowProperty = 'none'
+
+    const transformActive = () => {
+        if(!CSS.Transform.toString(transform)) {
+            return undefined
+        }
+        else if(isActived) {
+            boxShadowProperty = '0 10px 10px 2px rgba(0, 0, 0, 0.1)'
+
+            return `${CSS.Transform.toString(transform)} scale(1.03)`
+        }
+
+        return CSS.Transform.toString(transform)
+    }
+
     const style = {
-        transform: CSS.Transform.toString(transform),
-        transition
+        transform: transformActive(),
+        transition,
+        boxShadow: boxShadowProperty
     }
 
     return(
@@ -24,7 +40,7 @@ function Task(props) {
         ref={setNodeRef}
         style={style}
         
-        className={`h-12 md:h-16 px-5 md:px-6 flex items-center bg-white dark:bg-slate-200  border-b-[1px] border-grayish-101 dark:dborder-grayish-209 ${isActived ? `rounded-md` : `rounded-t-md`}`}>
+        className={`h-12 md:h-16 px-5 md:px-6 flex items-center bg-white dark:bg-slate-200  border-b-[1px] border-grayish-101 dark:border-grayish-209 ${isActived ? `rounded-md relative z-10` : `rounded-t-md block z-0`}`}>
 
             {/* cirlce */}
             <div className={`w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208 hover:cursor-pointer  from-sky to-purple flex items-center justify-center ${isCompleted ? `border-0 bg-gradient-to-br hover:opacity-75` :`hover:bg-gradient-to-br hover:border-0`}`}
