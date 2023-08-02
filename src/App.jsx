@@ -13,7 +13,8 @@ function App() {
   const [todoItems, setTodoItems] = useState([])
   const [currentInput, setCurrentInput] = useState('')
   const [filterSettings, setFilterSettings] = useState({all: true, active: false, completed: false})
-  const touchSensor = useSensor(TouchSensor);
+  const [activeId, setActiveId] = useState(null)
+  const touchSensor = useSensor(TouchSensor)
   const mouseSensor = useSensor(MouseSensor)
   const sensors = useSensors(
     touchSensor,
@@ -160,6 +161,10 @@ function App() {
       }
       await batch.commit()
     }
+    setActiveId(null)
+  }
+  function handleDragStart(e) {
+    setActiveId(e.active.id)
   }
 
   // Background files
@@ -213,10 +218,11 @@ function App() {
           </div>
 
           {/* todo notes */}
-          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 divide-y divide-grayish-101 dark:divide-grayish-209">
+          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 ">
             <DndContext
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
+              onDragStart={handleDragStart}
               sensors={sensors}
             >
               <SortableContext
@@ -246,6 +252,7 @@ function App() {
                     isCompleted={task.isCompleted}
                     deleteTodo={() => deleteTodo(task.id)}
                     toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
+                    isActived={activeId === task.id ? true : false}
                   />
                 ))}
               </SortableContext>

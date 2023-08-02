@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities'
 import checkIcon from '../../public/images/icon-check.svg'
 
 function Task(props) {
-    const {id, description, isCompleted, deleteTodo, toggleIsCompleted} = props
+    const {id, description, isCompleted, deleteTodo, toggleIsCompleted, isActived} = props
     const {
         attributes,
         listeners,
@@ -24,7 +24,7 @@ function Task(props) {
         ref={setNodeRef}
         style={style}
         
-        className="h-12 md:h-16 px-5 md:px-6 flex items-center bg-white dark:bg-slate-200 rounded-md">
+        className={`h-12 md:h-16 px-5 md:px-6 flex items-center bg-white dark:bg-slate-200  border-b-[1px] border-grayish-101 dark:dborder-grayish-209 ${isActived ? `rounded-md` : `rounded-t-md`}`}>
 
             {/* cirlce */}
             <div className={`w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208 hover:cursor-pointer  from-sky to-purple flex items-center justify-center ${isCompleted ? `border-0 bg-gradient-to-br hover:opacity-75` :`hover:bg-gradient-to-br hover:border-0`}`}
