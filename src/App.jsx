@@ -175,7 +175,7 @@ function App() {
     'dark:md:bg-[url("./assets/bg-desktop-dark.jpg")]'
 
   return (
-    <div className={`font-jos ${isDarkThemeOn && `dark`}`}>
+    <div className={`font-jos overflow-hidden ${isDarkThemeOn && `dark`}`}>
       <main className='bg-grayish-100 dark:bg-slate-202 min-h-[100vh] grid grid-cols-1 grid-rows-1'>
 
         {/* background image */}
