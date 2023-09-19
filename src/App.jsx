@@ -7,6 +7,7 @@ import Task from './components/Task'
 import Filter from './components/Filter'
 import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
+import SignUp from './components/SignUp'
 
 function App() {
   const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
@@ -175,118 +176,119 @@ function App() {
     'dark:md:bg-[url("./assets/bg-desktop-dark.jpg")]'
 
   return (
-    <div className={`font-jos overflow-hidden ${isDarkThemeOn && `dark`}`}>
-      <main className='bg-grayish-100 dark:bg-slate-202 min-h-[100vh] grid grid-cols-1 grid-rows-1'>
+    // <div className={`font-jos overflow-hidden ${isDarkThemeOn && `dark`}`}>
+    //   <main className='bg-grayish-100 dark:bg-slate-202 min-h-[100vh] grid grid-cols-1 grid-rows-1'>
 
-        {/* background image */}
-         <div className={`bg-cover bg-center h-[200px] md:h-[300px] w-[100%] col-start-1 col-end-1 row-start-1 row-end-1 ${backgroundImage}`}>
-        </div>
+    //     {/* background image */}
+    //      <div className={`bg-cover bg-center h-[200px] md:h-[300px] w-[100%] col-start-1 col-end-1 row-start-1 row-end-1 ${backgroundImage}`}>
+    //     </div>
 
-        {/* container for all the content */}
-        <div className="col-start-1 col-end-1 row-start-1 row-end-1 self-start justify-self-center w-[87%] max-w-[550px] mt-10 md:mt-[65px]">
+    //     {/* container for all the content */}
+    //     <div className="col-start-1 col-end-1 row-start-1 row-end-1 self-start justify-self-center w-[87%] max-w-[550px] mt-10 md:mt-[65px]">
 
-          {/* container for title and button */}
-          <div className='flex justify-between mb-7'>
+    //       {/* container for title and button */}
+    //       <div className='flex justify-between mb-7'>
             
-          {/* title */}
-            <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
+    //       {/* title */}
+    //         <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
 
-          {/* button to toggle theme */}
-            <button className='self-center rounded-full'>
-              <img 
-              onClick={toggleDarkTheme}
-              src={isDarkThemeOn ? sunIcon : moonIcon} alt="" />
-            </button>
-          </div>
+    //       {/* button to toggle theme */}
+    //         <button className='self-center rounded-full'>
+    //           <img 
+    //           onClick={toggleDarkTheme}
+    //           src={isDarkThemeOn ? sunIcon : moonIcon} alt="" />
+    //         </button>
+    //       </div>
           
 
-          {/* notes input */}
-          <div 
-          className="bg-white dark:bg-slate-200 flex items-center px-5 md:px-6 h-12 md:h-16 rounded-md">
+    //       {/* notes input */}
+    //       <div 
+    //       className="bg-white dark:bg-slate-200 flex items-center px-5 md:px-6 h-12 md:h-16 rounded-md">
             
-            {/* circle */}
-            <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
+    //         {/* circle */}
+    //         <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
 
-            {/* input */}
-            <input 
-            type="text" 
-            placeholder="Create a new todo..." 
-            onChange={updateCurrentInput}
-            onKeyDown={handleEnter}
-            value={currentInput}
-            className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 dark:text-grayish-202 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
-          </div>
+    //         {/* input */}
+    //         <input 
+    //         type="text" 
+    //         placeholder="Create a new todo..." 
+    //         onChange={updateCurrentInput}
+    //         onKeyDown={handleEnter}
+    //         value={currentInput}
+    //         className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 dark:text-grayish-202 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
+    //       </div>
 
-          {/* todo notes */}
-          <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 ">
-            <DndContext
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-              onDragStart={handleDragStart}
-              sensors={sensors}
-            >
-              <SortableContext
-                items={todoItems}
-                strategy={verticalListSortingStrategy}
-              >
-                {todoItems.filter(task => {
-                  // If filter settings is on 'All'
-                  if(filterSettings.all) {
-                    return true
-                  }
-                  // If filter settings is on 'Active'
-                  else if(filterSettings.active) {
-                    return !task.isCompleted
-                  }
-                  // If filter settings is on 'Completed'
-                  else if(filterSettings.completed) {
-                    return task.isCompleted
-                  }
-                })
-                .map(task => (
-                  // Render task components
-                  <Task 
-                    key={task.id}
-                    id={task.id}
-                    description={task.description}
-                    isCompleted={task.isCompleted}
-                    deleteTodo={() => deleteTodo(task.id)}
-                    toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
-                    isActived={activeId === task.id ? true : false}
-                  />
-                ))}
-              </SortableContext>
-            </DndContext>
+    //       {/* todo notes */}
+    //       <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 ">
+    //         <DndContext
+    //           collisionDetection={closestCenter}
+    //           onDragEnd={handleDragEnd}
+    //           onDragStart={handleDragStart}
+    //           sensors={sensors}
+    //         >
+    //           <SortableContext
+    //             items={todoItems}
+    //             strategy={verticalListSortingStrategy}
+    //           >
+    //             {todoItems.filter(task => {
+    //               // If filter settings is on 'All'
+    //               if(filterSettings.all) {
+    //                 return true
+    //               }
+    //               // If filter settings is on 'Active'
+    //               else if(filterSettings.active) {
+    //                 return !task.isCompleted
+    //               }
+    //               // If filter settings is on 'Completed'
+    //               else if(filterSettings.completed) {
+    //                 return task.isCompleted
+    //               }
+    //             })
+    //             .map(task => (
+    //               // Render task components
+    //               <Task 
+    //                 key={task.id}
+    //                 id={task.id}
+    //                 description={task.description}
+    //                 isCompleted={task.isCompleted}
+    //                 deleteTodo={() => deleteTodo(task.id)}
+    //                 toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
+    //                 isActived={activeId === task.id ? true : false}
+    //               />
+    //             ))}
+    //           </SortableContext>
+    //         </DndContext>
 
-            <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
-              {/* Calculate how many items are left */}
-              <p>{`${todoItems.filter(task => !task.isCompleted).length} items left`}</p>
+    //         <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
+    //           {/* Calculate how many items are left */}
+    //           <p>{`${todoItems.filter(task => !task.isCompleted).length} items left`}</p>
               
-              {/* filter options */}
-              <div className='hidden md:block'>
-                <Filter 
-                  filterSettings={filterSettings}
-                  toggleFilterSettings={toggleFilterSettings}
-                />
-              </div>
-              <p className='hover:cursor-pointer hover:text-grayish-108 dark:hover:text-grayish-200'
-              onClick={clearCompleted}>Clear Completed</p>
-            </div>
-          </div>
+    //           {/* filter options */}
+    //           <div className='hidden md:block'>
+    //             <Filter 
+    //               filterSettings={filterSettings}
+    //               toggleFilterSettings={toggleFilterSettings}
+    //             />
+    //           </div>
+    //           <p className='hover:cursor-pointer hover:text-grayish-108 dark:hover:text-grayish-200'
+    //           onClick={clearCompleted}>Clear Completed</p>
+    //         </div>
+    //       </div>
 
-          {/* filter options */}
-          <div className='block md:hidden'>
-            <Filter 
-              filterSettings={filterSettings}
-              toggleFilterSettings={toggleFilterSettings}
-            />
-          </div>
+    //       {/* filter options */}
+    //       <div className='block md:hidden'>
+    //         <Filter 
+    //           filterSettings={filterSettings}
+    //           toggleFilterSettings={toggleFilterSettings}
+    //         />
+    //       </div>
 
-          {/* bottom text */}
-          <p className="text-sm text-center text-grayish-104 dark:text-grayish-204 mt-11">Drag and drop to reorder list</p>
-        </div>
-      </main>
-    </div>
+    //       {/* bottom text */}
+    //       <p className="text-sm text-center text-grayish-104 dark:text-grayish-204 mt-11">Drag and drop to reorder list</p>
+    //     </div>
+    //   </main>
+    // </div>
+    <SignUp />
   )
 } 
 

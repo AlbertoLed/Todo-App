@@ -40,6 +40,11 @@ export default {
         blue: 'hsl(220, 98%, 61%)',
         sky: 'hsl(192, 100%, 67%)',
         purple: 'hsl(280, 87%, 65%)',
+        violet: {
+          100: '#b7b3fc',
+          200: '#aa6cf1'
+        },
+        sky: '#75a7fc'
       },
       screens: {
         'md': '633px'
