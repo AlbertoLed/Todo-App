@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { onSnapshot, addDoc, doc, setDoc, writeBatch } from 'firebase/firestore'
-import { todoCollection, db } from './firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { todoCollection, db, auth } from './firebase'
 import Task from './components/Task'
 import Filter from './components/Filter'
 import moonIcon from '../public/images/icon-moon.svg'
@@ -168,6 +169,11 @@ function App() {
     setActiveId(e.active.id)
   }
 
+  function createUser(email, password) {
+    console.log('create account')
+    createUserWithEmailAndPassword(auth, email, password)
+  }
+
   // Background files
   const backgroundImage = 
     'bg-[url("./assets/bg-mobile-light.jpg")] ' +
@@ -288,7 +294,7 @@ function App() {
     //     </div>
     //   </main>
     // </div>
-    <SignUp />
+    <SignUp createUser={createUser} />
   )
 } 
 
