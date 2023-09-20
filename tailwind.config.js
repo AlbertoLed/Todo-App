@@ -17,6 +17,7 @@ export default {
         base: '.9rem',
         lg: '1.2rem',
         '2xl': '1.7rem',
+        '3xl': '2.1rem',
         '4xl': '2.5rem',
       },
       colors: {
@@ -41,10 +42,10 @@ export default {
         sky: 'hsl(192, 100%, 67%)',
         purple: 'hsl(280, 87%, 65%)',
         violet: {
-          100: '#b7b3fc',
-          200: '#aa6cf1'
+          100: '#7d72cf',
+          200: '#9a57d4'
         },
-        sky: '#75a7fc'
+        'dark-sky': '#5785d4'
       },
       screens: {
         'md': '633px'
