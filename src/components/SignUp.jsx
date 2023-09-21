@@ -49,7 +49,7 @@ function SignUp({createUser}) {
             value={formData.secondPass}
             className="mb-9 p-3 bg-violet-100 border-white border-[1px] rounded-md outline outline-transparent outline-1 focus:outline-white placeholder:text-grayish-101 max-w-[500px] mx-auto w-full" />
             <button 
-            className="bg-white text-black font-bold p-3 rounded-md max-w-[500px] mx-auto w-full"
+            className="bg-white text-black font-bold p-3 rounded-md max-w-[500px] mx-auto w-full shadow-lg"
             onClick={handleSignUp}
             >Sign Up</button>
             <p className="mt-auto mb-12 text-center max-w-[500px] mx-auto w-full">Already have an account? <span className="font-bold">Login Now</span></p>
