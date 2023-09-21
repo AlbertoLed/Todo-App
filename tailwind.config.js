@@ -19,6 +19,7 @@ export default {
         '2xl': '1.7rem',
         '3xl': '2.1rem',
         '4xl': '2.5rem',
+        '5xl': '2.8rem',
       },
       colors: {
         gray: 'hsl(0, 0%, 98%)',
