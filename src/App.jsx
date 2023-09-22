@@ -8,7 +8,9 @@ import Task from './components/Task'
 import Filter from './components/Filter'
 import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
-import SignUp from './components/SignUp'
+import Authentication from './components/Authentication/Authentication'
+// import SignUp from './components/SignUp'
+// import Start from './components/Authentication/Start'
 
 function App() {
   const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
@@ -294,7 +296,9 @@ function App() {
     //     </div>
     //   </main>
     // </div>
-    <SignUp createUser={createUser} />
+    <Authentication />
+    // <Start />
+    // <SignUp createUser={createUser} />
   )
 } 
 

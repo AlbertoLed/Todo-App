@@ -25,7 +25,7 @@ function SignUp({createUser}) {
     }
 
     return(
-        <div className="min-h-[100vh] bg-gradient-to-b from-violet-200 to-dark-sky text-white flex flex-col px-7 justify-center">
+        <>
             <h1 className="text-3xl mb-9 mt-auto text-center flex flex-col leading-10 max-w-[500px] mx-auto w-full md:text-5xl"><span className="font-bold">Create Accout</span> <span>to get started now!</span></h1>
             <input 
             type="email" 
@@ -53,7 +53,7 @@ function SignUp({createUser}) {
             onClick={handleSignUp}
             >Sign Up</button>
             <p className="mt-auto mb-12 text-center max-w-[500px] mx-auto w-full">Already have an account? <span className="font-bold">Login Now</span></p>
-        </div>
+        </>
     )
 }
 
