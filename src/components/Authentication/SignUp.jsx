@@ -33,6 +33,7 @@ function SignUp({createUser, goBack}) {
             </IconContext.Provider>
 
             <h1 className="text-3xl mb-9 mt-auto text-center flex flex-col leading-10 max-w-[500px] mx-auto w-full md:text-5xl"><span className="font-bold">Create Accout</span> <span>to get started now!</span></h1>
+            <p className="mb-3">We are happy to see you here.</p>
             <input 
             type="email" 
             placeholder="Email Address" 
