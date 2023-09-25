@@ -4,8 +4,9 @@ function AuthenticationOption(props) {
     const {selectLogin, selectSignUp, goBack} = props
     return(
         <>
-            <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
+            <h1 className="uppercase text-white text-4xl md:text-4xl font-bold tracking-[.3em] mb-[70px] text-center">Todo</h1>
             <Button 
+            className="mb-5"
             onClick={selectLogin}
             >Login</Button>
             <Button
