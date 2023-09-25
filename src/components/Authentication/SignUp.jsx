@@ -2,7 +2,7 @@ import { useState } from "react"
 import { IconContext } from "react-icons"
 import { FaAngleLeft } from "react-icons/fa6"
 
-function SignUp({createUser, goBack}) {
+function SignUp({createUser, goBack, selectLogin}) {
     const [formData, setFormData] = useState({
         email: "",
         pass: "",
@@ -59,7 +59,7 @@ function SignUp({createUser, goBack}) {
             className="bg-white text-black font-bold p-3 rounded-md max-w-[500px] mx-auto w-full shadow-lg"
             onClick={handleSignUp}
             >Sign Up</button>
-            <p className="mt-auto mb-12 text-center max-w-[500px] mx-auto w-full">Already have an account? <span className="font-bold">Login Now</span></p>
+            <p className="mt-auto mb-12 text-center max-w-[500px] mx-auto w-full">Already have an account? <span className="font-bold hover:cursor-pointer" onClick={selectLogin}>Login Now</span></p>
         </>
     )
 }

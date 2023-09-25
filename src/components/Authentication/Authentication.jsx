@@ -17,7 +17,7 @@ function Authentication() {
             selectLogin={selectLogin}
             selectSignUp={selectSignUp}
             /> : 
-            loginSelected ? <Login goBack={goBack} /> : <SignUp goBack={goBack} />
+            loginSelected ? <Login goBack={goBack} selectSignUp={selectSignUp} /> : <SignUp goBack={goBack} selectLogin={selectLogin} />
 
             }
         </div>
