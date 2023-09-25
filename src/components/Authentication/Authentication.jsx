@@ -1,6 +1,7 @@
 import { useState } from "react"
 import AuthenticationOption from "./AuthenticationOption"
 import SignUp from "./SignUp"
+import Login from "./Login"
 
 function Authentication() {
     const [loginSelected, setLoginSelected] = useState(null)
@@ -16,7 +17,7 @@ function Authentication() {
             selectLogin={selectLogin}
             selectSignUp={selectSignUp}
             /> : 
-            loginSelected ? 'login' : <SignUp goBack={goBack} />
+            loginSelected ? <Login goBack={goBack} /> : <SignUp goBack={goBack} />
 
             }
         </div>
