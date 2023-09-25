@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { IconContext } from "react-icons"
+import { FaAngleLeft } from "react-icons/fa6"
 
-function SignUp({createUser}) {
+function SignUp({createUser, goBack}) {
     const [formData, setFormData] = useState({
         email: "",
         pass: "",
@@ -26,6 +28,10 @@ function SignUp({createUser}) {
 
     return(
         <>
+            <IconContext.Provider value={{size:"35px", className:"mt-7 hover:cursor-pointer"}}>
+                <FaAngleLeft onClick={goBack} />
+            </IconContext.Provider>
+
             <h1 className="text-3xl mb-9 mt-auto text-center flex flex-col leading-10 max-w-[500px] mx-auto w-full md:text-5xl"><span className="font-bold">Create Accout</span> <span>to get started now!</span></h1>
             <input 
             type="email" 
