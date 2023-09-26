@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { onSnapshot, addDoc, doc, setDoc, writeBatch } from 'firebase/firestore'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'
 import { todoCollection, db, auth } from './firebase'
 import Task from './components/Task'
 import Filter from './components/Filter'
@@ -12,6 +12,7 @@ import Authentication from './components/Authentication/Authentication'
 
 
 function App() {
+  const [isLogedIn, setIsLogedIn] = useState(false)
   const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
   const [todoItems, setTodoItems] = useState([])
   const [currentInput, setCurrentInput] = useState('')
@@ -23,6 +24,20 @@ function App() {
     touchSensor,
     mouseSensor
     )
+
+  // Check login
+  useEffect(() => {
+    onAuthStateChanged(auth, (data) => {
+      if(data) {
+        console.log('login')
+        console.log(data)
+        setIsLogedIn(true)
+      }
+      else {
+        console.log('NOT login')
+      }
+    })
+  }, [])
 
   // Get the todo items from firebase
   useEffect(() => {
@@ -197,122 +212,120 @@ function App() {
     'dark:bg-[url("./assets/bg-mobile-dark.jpg")] ' +
     'dark:md:bg-[url("./assets/bg-desktop-dark.jpg")]'
 
-  return (
-    // <div className={`font-jos overflow-hidden ${isDarkThemeOn && `dark`}`}>
-    //   <main className='bg-grayish-100 dark:bg-slate-202 min-h-[100vh] grid grid-cols-1 grid-rows-1'>
+  return isLogedIn ?
+      <div className={`font-jos overflow-hidden ${isDarkThemeOn && `dark`}`}>
+        <main className='bg-grayish-100 dark:bg-slate-202 min-h-[100vh] grid grid-cols-1 grid-rows-1'>
 
-    //     {/* background image */}
-    //      <div className={`bg-cover bg-center h-[200px] md:h-[300px] w-[100%] col-start-1 col-end-1 row-start-1 row-end-1 ${backgroundImage}`}>
-    //     </div>
+          {/* background image */}
+           <div className={`bg-cover bg-center h-[200px] md:h-[300px] w-[100%] col-start-1 col-end-1 row-start-1 row-end-1 ${backgroundImage}`}>
+          </div>
 
-    //     {/* container for all the content */}
-    //     <div className="col-start-1 col-end-1 row-start-1 row-end-1 self-start justify-self-center w-[87%] max-w-[550px] mt-10 md:mt-[65px]">
+          {/* container for all the content */}
+          <div className="col-start-1 col-end-1 row-start-1 row-end-1 self-start justify-self-center w-[87%] max-w-[550px] mt-10 md:mt-[65px]">
 
-    //       {/* container for title and button */}
-    //       <div className='flex justify-between mb-7'>
-            
-    //       {/* title */}
-    //         <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
-
-    //       {/* button to toggle theme */}
-    //         <button className='self-center rounded-full'>
-    //           <img 
-    //           onClick={toggleDarkTheme}
-    //           src={isDarkThemeOn ? sunIcon : moonIcon} alt="" />
-    //         </button>
-    //       </div>
-          
-
-    //       {/* notes input */}
-    //       <div 
-    //       className="bg-white dark:bg-slate-200 flex items-center px-5 md:px-6 h-12 md:h-16 rounded-md">
-            
-    //         {/* circle */}
-    //         <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
-
-    //         {/* input */}
-    //         <input 
-    //         type="text" 
-    //         placeholder="Create a new todo..." 
-    //         onChange={updateCurrentInput}
-    //         onKeyDown={handleEnter}
-    //         value={currentInput}
-    //         className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 dark:text-grayish-202 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
-    //       </div>
-
-    //       {/* todo notes */}
-    //       <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 ">
-    //         <DndContext
-    //           collisionDetection={closestCenter}
-    //           onDragEnd={handleDragEnd}
-    //           onDragStart={handleDragStart}
-    //           sensors={sensors}
-    //         >
-    //           <SortableContext
-    //             items={todoItems}
-    //             strategy={verticalListSortingStrategy}
-    //           >
-    //             {todoItems.filter(task => {
-    //               // If filter settings is on 'All'
-    //               if(filterSettings.all) {
-    //                 return true
-    //               }
-    //               // If filter settings is on 'Active'
-    //               else if(filterSettings.active) {
-    //                 return !task.isCompleted
-    //               }
-    //               // If filter settings is on 'Completed'
-    //               else if(filterSettings.completed) {
-    //                 return task.isCompleted
-    //               }
-    //             })
-    //             .map(task => (
-    //               // Render task components
-    //               <Task 
-    //                 key={task.id}
-    //                 id={task.id}
-    //                 description={task.description}
-    //                 isCompleted={task.isCompleted}
-    //                 deleteTodo={() => deleteTodo(task.id)}
-    //                 toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
-    //                 isActived={activeId === task.id ? true : false}
-    //               />
-    //             ))}
-    //           </SortableContext>
-    //         </DndContext>
-
-    //         <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
-    //           {/* Calculate how many items are left */}
-    //           <p>{`${todoItems.filter(task => !task.isCompleted).length} items left`}</p>
+            {/* container for title and button */}
+            <div className='flex justify-between mb-7'>
               
-    //           {/* filter options */}
-    //           <div className='hidden md:block'>
-    //             <Filter 
-    //               filterSettings={filterSettings}
-    //               toggleFilterSettings={toggleFilterSettings}
-    //             />
-    //           </div>
-    //           <p className='hover:cursor-pointer hover:text-grayish-108 dark:hover:text-grayish-200'
-    //           onClick={clearCompleted}>Clear Completed</p>
-    //         </div>
-    //       </div>
+            {/* title */}
+              <h1 className="uppercase text-white text-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
 
-    //       {/* filter options */}
-    //       <div className='block md:hidden'>
-    //         <Filter 
-    //           filterSettings={filterSettings}
-    //           toggleFilterSettings={toggleFilterSettings}
-    //         />
-    //       </div>
+            {/* button to toggle theme */}
+              <button className='self-center rounded-full'>
+                <img 
+                onClick={toggleDarkTheme}
+                src={isDarkThemeOn ? sunIcon : moonIcon} alt="" />
+              </button>
+            </div>
+            
 
-    //       {/* bottom text */}
-    //       <p className="text-sm text-center text-grayish-104 dark:text-grayish-204 mt-11">Drag and drop to reorder list</p>
-    //     </div>
-    //   </main>
-    // </div>
-    <Authentication createUser={createUser} signInUser={signInUser} />
-    // <SignUp createUser={createUser} />
-  )
+            {/* notes input */}
+            <div 
+            className="bg-white dark:bg-slate-200 flex items-center px-5 md:px-6 h-12 md:h-16 rounded-md">
+              
+              {/* circle */}
+              <div className="w-[20px] h-[20px] md:w-[26px] md:h-[26px] rounded-full border border-grayish-101 dark:border-grayish-208"></div>
+
+              {/* input */}
+              <input 
+              type="text" 
+              placeholder="Create a new todo..." 
+              onChange={updateCurrentInput}
+              onKeyDown={handleEnter}
+              value={currentInput}
+              className="text-xs md:text-lg w-[100%] h-[100%] ml-2 outline-none text-grayish-108 dark:text-grayish-202 placeholder-grayish-104 dark:placeholder-grayish-204 dark:bg-slate-200"/>
+            </div>
+
+            {/* todo notes */}
+            <div className="bg-white dark:bg-slate-200 rounded-md my-4 shadow-2xl shadow-black/25 ">
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+                onDragStart={handleDragStart}
+                sensors={sensors}
+              >
+                <SortableContext
+                  items={todoItems}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {todoItems.filter(task => {
+                    // If filter settings is on 'All'
+                    if(filterSettings.all) {
+                      return true
+                    }
+                    // If filter settings is on 'Active'
+                    else if(filterSettings.active) {
+                      return !task.isCompleted
+                    }
+                    // If filter settings is on 'Completed'
+                    else if(filterSettings.completed) {
+                      return task.isCompleted
+                    }
+                  })
+                  .map(task => (
+                    // Render task components
+                    <Task 
+                      key={task.id}
+                      id={task.id}
+                      description={task.description}
+                      isCompleted={task.isCompleted}
+                      deleteTodo={() => deleteTodo(task.id)}
+                      toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
+                      isActived={activeId === task.id ? true : false}
+                    />
+                  ))}
+                </SortableContext>
+              </DndContext>
+
+              <div className="h-12 flex items-center justify-between text-xs text-grayish-104 dark:text-grayish-204 px-5 md:p-6 ">
+                {/* Calculate how many items are left */}
+                <p>{`${todoItems.filter(task => !task.isCompleted).length} items left`}</p>
+                
+                {/* filter options */}
+                <div className='hidden md:block'>
+                  <Filter 
+                    filterSettings={filterSettings}
+                    toggleFilterSettings={toggleFilterSettings}
+                  />
+                </div>
+                <p className='hover:cursor-pointer hover:text-grayish-108 dark:hover:text-grayish-200'
+                onClick={clearCompleted}>Clear Completed</p>
+              </div>
+            </div>
+
+            {/* filter options */}
+            <div className='block md:hidden'>
+              <Filter 
+                filterSettings={filterSettings}
+                toggleFilterSettings={toggleFilterSettings}
+              />
+            </div>
+
+            {/* bottom text */}
+            <p className="text-sm text-center text-grayish-104 dark:text-grayish-204 mt-11">Drag and drop to reorder list</p>
+          </div>
+        </main>
+      </div>
+    : <Authentication createUser={createUser} signInUser={signInUser} />
 } 
 
 export default App
