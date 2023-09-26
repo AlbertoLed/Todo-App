@@ -1,8 +1,9 @@
+import { updatePassword } from "firebase/auth"
 import { useState } from "react"
 import { IconContext } from "react-icons"
 import { FaAngleLeft } from "react-icons/fa6"
 
-function Login({goBack, selectSignUp}) {
+function Login({signInUser, goBack, selectSignUp}) {
     const [formData, setFormData] = useState({
         email: "",
         pass: ""
@@ -14,6 +15,9 @@ function Login({goBack, selectSignUp}) {
             ...prevData,
             [name]: value
         }))
+    }
+    function handleLogin() {
+        signInUser(formData.email, formData.pass)
     }
 
 
@@ -42,6 +46,7 @@ function Login({goBack, selectSignUp}) {
             
             <button 
             className="bg-white text-black font-bold p-3 rounded-md max-w-[500px] mx-auto w-full shadow-lg"
+            onClick={handleLogin}
             >Login</button>
             <p className="mt-auto mb-12 text-center max-w-[500px] mx-auto w-full">Don't have an account? <span className="font-bold hover:cursor-pointer" onClick={selectSignUp}>Sign Up Now</span></p>
         </>

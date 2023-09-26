@@ -2,15 +2,14 @@ import { useState, useEffect } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { onSnapshot, addDoc, doc, setDoc, writeBatch } from 'firebase/firestore'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { todoCollection, db, auth } from './firebase'
 import Task from './components/Task'
 import Filter from './components/Filter'
 import moonIcon from '../public/images/icon-moon.svg'
 import sunIcon from '../public/images/icon-sun.svg'
 import Authentication from './components/Authentication/Authentication'
-// import SignUp from './components/SignUp'
-// import Start from './components/Authentication/Start'
+
 
 function App() {
   const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
@@ -171,9 +170,24 @@ function App() {
     setActiveId(e.active.id)
   }
 
-  function createUser(email, password) {
-    console.log('create account')
-    createUserWithEmailAndPassword(auth, email, password)
+  async function createUser(email, password) {
+    try {
+      console.log('try create account')
+      const res = await createUserWithEmailAndPassword(auth, email, password)
+      console.log(res)
+    } catch(error) {
+      console.log(error)
+    }
+  }
+  async function signInUser(email, password) {
+    try {
+      console.log('try sign in')
+      const res = await signInWithEmailAndPassword(auth, email, password)
+      console.log(res)
+    }
+    catch(error) {
+      console.log(error)
+    }
   }
 
   // Background files
@@ -296,8 +310,7 @@ function App() {
     //     </div>
     //   </main>
     // </div>
-    <Authentication />
-    // <Start />
+    <Authentication createUser={createUser} signInUser={signInUser} />
     // <SignUp createUser={createUser} />
   )
 } 

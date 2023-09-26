@@ -3,7 +3,7 @@ import AuthenticationOption from "./AuthenticationOption"
 import SignUp from "./SignUp"
 import Login from "./Login"
 
-function Authentication() {
+function Authentication({createUser, signInUser}) {
     const [loginSelected, setLoginSelected] = useState(null)
 
     const selectLogin = () => setLoginSelected(true)
@@ -17,7 +17,7 @@ function Authentication() {
             selectLogin={selectLogin}
             selectSignUp={selectSignUp}
             /> : 
-            loginSelected ? <Login goBack={goBack} selectSignUp={selectSignUp} /> : <SignUp goBack={goBack} selectLogin={selectLogin} />
+            loginSelected ? <Login signInUser={signInUser} goBack={goBack} selectSignUp={selectSignUp} /> : <SignUp createUser={createUser} goBack={goBack} selectLogin={selectLogin} />
 
             }
         </div>
