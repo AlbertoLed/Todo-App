@@ -7,8 +7,10 @@ import Task from './Task'
 import Filter from './Filter'
 import moonIcon from '../../public/images/icon-moon.svg'
 import sunIcon from '../../public/images/icon-sun.svg'
-import { FaCircleUser } from "react-icons/fa6";
-import { IconContext } from "react-icons";
+import { FaCircleUser } from "react-icons/fa6"
+import { IconContext } from "react-icons"
+import Menu from './Menu/index'
+import UserMenuContainer from './Menu/MenuContainer'
 
 
 function Homepage() {
@@ -196,14 +198,22 @@ function Homepage() {
 
                 {/* button to toggle theme */}
                 <div className='self-center flex space-x-3'>
-                    <img 
+                    <Menu>
+                        <Menu.Button>
+                            <IconContext.Provider value={{color: 'white', size: '26px', className: 'hover:cursor-pointer'}}>
+                                <FaCircleUser />
+                            </IconContext.Provider>
+                        </Menu.Button>
+                        <Menu.Container>
+                            <img 
                     onClick={toggleDarkTheme}
                     src={isDarkThemeOn ? sunIcon : moonIcon} 
                     alt="theme icon"
                     className='hover:cursor-pointer' />
-                    <IconContext.Provider value={{color: 'white', size: '26px', className: 'hover:cursor-pointer'}}>
-                        <FaCircleUser />
-                    </IconContext.Provider>
+                        </Menu.Container>
+                    </Menu>
+                    
+                    
                     
                 </div>
                 
