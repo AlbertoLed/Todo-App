@@ -11,16 +11,17 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (data) => {
       if(data) {
-        console.log('login')
-        console.log(data)
+        // console.log('login')
+        // console.log(data)
         setIsLogedIn(true)
       }
       else {
-        console.log('NOT login')
+        // console.log('NOT login')
       }
     })
   }, [])
 
+  // Create user in firebase
   async function createUser(email, password) {
     try {
       console.log('try create account')
@@ -30,6 +31,7 @@ function App() {
       console.log(error)
     }
   }
+  // Login user
   async function signInUser(email, password) {
     try {
       console.log('try sign in')

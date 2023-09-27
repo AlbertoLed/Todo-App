@@ -7,6 +7,8 @@ import Task from './Task'
 import Filter from './Filter'
 import moonIcon from '../../public/images/icon-moon.svg'
 import sunIcon from '../../public/images/icon-sun.svg'
+import { FaCircleUser } from "react-icons/fa6";
+import { IconContext } from "react-icons";
 
 
 function Homepage() {
@@ -193,11 +195,18 @@ function Homepage() {
                 <h1 className="uppercase text-white stext-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
 
                 {/* button to toggle theme */}
-                <button className='self-center rounded-full'>
+                <div className='self-center flex space-x-3'>
                     <img 
                     onClick={toggleDarkTheme}
-                    src={isDarkThemeOn ? sunIcon : moonIcon} alt="" />
-                </button>
+                    src={isDarkThemeOn ? sunIcon : moonIcon} 
+                    alt="theme icon"
+                    className='hover:cursor-pointer' />
+                    <IconContext.Provider value={{color: 'white', size: '26px', className: 'hover:cursor-pointer'}}>
+                        <FaCircleUser />
+                    </IconContext.Provider>
+                    
+                </div>
+                
                 </div>
                 
 
