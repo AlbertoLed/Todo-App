@@ -13,7 +13,7 @@ import Menu from './Menu/index'
 import UserMenuContainer from './Menu/MenuContainer'
 
 
-function Homepage() {
+function Homepage({signOutAccount}) {
     const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
     const [todoItems, setTodoItems] = useState([])
     const [currentInput, setCurrentInput] = useState('')
@@ -220,7 +220,9 @@ function Homepage() {
                                     <p>{isDarkThemeOn ? 'Light theme' : 'Dark theme'}</p>
                                 </div>
                                 <ul>
-                                    <li className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'>
+                                    <li 
+                                    className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'
+                                    onClick={signOutAccount}>
                                         <FaRightToBracket className='text-[26px]' />
                                         <p>Sign out</p>
                                     </li>

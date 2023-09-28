@@ -16,6 +16,7 @@ function App() {
         setIsLogedIn(true)
       }
       else {
+        setIsLogedIn(false)
         // console.log('NOT login')
       }
     })
@@ -24,27 +25,30 @@ function App() {
   // Create user in firebase
   async function createUser(email, password) {
     try {
-      console.log('try create account')
       const res = await createUserWithEmailAndPassword(auth, email, password)
-      console.log(res)
+      // console.log(res)
     } catch(error) {
-      console.log(error)
+      // console.log(error)
     }
   }
   // Login user
   async function signInUser(email, password) {
     try {
-      console.log('try sign in')
       const res = await signInWithEmailAndPassword(auth, email, password)
-      console.log(res)
+      // console.log(res)
     }
     catch(error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
+  // Sign out
+  function signOutAccount() {
+    signOut(auth)
+  }
+
   return isLogedIn ?
-      <Homepage />
+      <Homepage signOutAccount={signOutAccount} />
     : <Authentication createUser={createUser} signInUser={signInUser} />
 } 
 
