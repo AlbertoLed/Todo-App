@@ -7,7 +7,7 @@ import Task from './Task'
 import Filter from './Filter'
 import moonIcon from '../../public/images/icon-moon.svg'
 import sunIcon from '../../public/images/icon-sun.svg'
-import { FaCircleUser } from "react-icons/fa6"
+import { FaCircleUser , FaRightToBracket, FaXmark, FaSun, FaMoon } from "react-icons/fa6"
 import { IconContext } from "react-icons"
 import Menu from './Menu/index'
 import UserMenuContainer from './Menu/MenuContainer'
@@ -197,7 +197,7 @@ function Homepage() {
                 <h1 className="uppercase text-white stext-2xl md:text-4xl font-bold tracking-[.3em]">Todo</h1>
 
                 {/* button to toggle theme */}
-                <div className='self-center flex space-x-3'>
+                <div className='self-center flex space-x-3 relative'>
                     <Menu>
                         <Menu.Button>
                             <IconContext.Provider value={{color: 'white', size: '26px', className: 'hover:cursor-pointer'}}>
@@ -205,11 +205,32 @@ function Homepage() {
                             </IconContext.Provider>
                         </Menu.Button>
                         <Menu.Container>
-                            <img 
-                    onClick={toggleDarkTheme}
-                    src={isDarkThemeOn ? sunIcon : moonIcon} 
-                    alt="theme icon"
-                    className='hover:cursor-pointer' />
+                            <div className='absolute z-20 right-0 top-10 w-[270px] flex flex-col bg-slate-202 text-grayish-202 rounded-lg shadow-lg shadow-slate-202 text-base'>
+                                <div className='flex items-end space-x-2 p-2 mt-3 mx-3 rounded-md'>
+                                    <FaCircleUser className='text-[26px]' />
+                                    <p>alberto@gmail.com</p>
+                                </div>
+                                <div className='h-px w-full my-2 bg-grayish-204'></div>
+                                <div 
+                                className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-slate-200 hover:cursor-pointer'
+                                onClick={toggleDarkTheme}>
+                                    {isDarkThemeOn ?
+                                    <FaSun className='text-[26px]' /> :
+                                    <FaMoon className='text-[26px]' /> }
+                                    <p>{isDarkThemeOn ? 'Light theme' : 'Dark theme'}</p>
+                                </div>
+                                <ul>
+                                    <li className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-slate-200 hover:cursor-pointer'>
+                                        <FaRightToBracket className='text-[26px]' />
+                                        <p>Sign out</p>
+                                    </li>
+                                    <li className='flex items-end space-x-2 p-2 mb-3 mx-3 rounded-md hover:bg-slate-200 hover:cursor-pointer'>
+                                        <FaXmark className='text-[26px]' />
+                                        <p>Delete account</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            
                         </Menu.Container>
                     </Menu>
                     
