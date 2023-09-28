@@ -23,6 +23,7 @@ export default {
       },
       colors: {
         gray: 'hsl(0, 0%, 98%)',
+        'gray-200': '#f5f2f2',
         grayish: {
           100: '#fafafa',
           101: 'hsl(236, 33%, 92%)',
@@ -36,6 +37,7 @@ export default {
           209: 'hsl(237, 14%, 26%)'
         },
         slate: {
+          100: '#32344d',
           200: 'hsl(235, 24%, 19%)',
           202: 'hsl(235, 21%, 11%)',
         },

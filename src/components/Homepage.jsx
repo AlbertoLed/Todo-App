@@ -205,14 +205,14 @@ function Homepage() {
                             </IconContext.Provider>
                         </Menu.Button>
                         <Menu.Container>
-                            <div className='absolute z-20 right-0 top-10 w-[270px] flex flex-col bg-slate-202 text-grayish-202 rounded-lg shadow-lg shadow-slate-202 text-base'>
+                            <div className='absolute z-20 right-0 top-10 w-[270px] flex flex-col bg-white text-grayish-108 text-base rounded-lg shadow-lg shadow-grayish-104 dark:shadow-slate-202 dark:bg-slate-200 dark:text-grayish-202'>
                                 <div className='flex items-end space-x-2 p-2 mt-3 mx-3 rounded-md'>
                                     <FaCircleUser className='text-[26px]' />
                                     <p>alberto@gmail.com</p>
                                 </div>
-                                <div className='h-px w-full my-2 bg-grayish-204'></div>
+                                <div className='h-px w-full my-2 bg-grayish-102 dark:bg-grayish-208'></div>
                                 <div 
-                                className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-slate-200 hover:cursor-pointer'
+                                className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'
                                 onClick={toggleDarkTheme}>
                                     {isDarkThemeOn ?
                                     <FaSun className='text-[26px]' /> :
@@ -220,11 +220,11 @@ function Homepage() {
                                     <p>{isDarkThemeOn ? 'Light theme' : 'Dark theme'}</p>
                                 </div>
                                 <ul>
-                                    <li className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-slate-200 hover:cursor-pointer'>
+                                    <li className='flex items-end space-x-2 p-2 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'>
                                         <FaRightToBracket className='text-[26px]' />
                                         <p>Sign out</p>
                                     </li>
-                                    <li className='flex items-end space-x-2 p-2 mb-3 mx-3 rounded-md hover:bg-slate-200 hover:cursor-pointer'>
+                                    <li className='flex items-end space-x-2 p-2 mb-3 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'>
                                         <FaXmark className='text-[26px]' />
                                         <p>Delete account</p>
                                     </li>
