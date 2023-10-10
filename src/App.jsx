@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from 'firebase/auth'
 import { auth } from './firebase'
 import Authentication from './components/Authentication/Authentication'
 import Homepage from './components/Homepage'
@@ -47,8 +47,21 @@ function App() {
     signOut(auth)
   }
 
+  // Delete user
+  async function deleteAccount() {
+    const user = auth.currentUser
+    try {
+      const res = await deleteUser(user)
+      console.log(res)
+
+    } 
+    catch(error) {
+      // console.log(error)
+    }
+  }
+
   return isLogedIn ?
-      <Homepage signOutAccount={signOutAccount} />
+      <Homepage signOutAccount={signOutAccount} deleteAccount={deleteAccount} />
     : <Authentication createUser={createUser} signInUser={signInUser} />
 } 
 

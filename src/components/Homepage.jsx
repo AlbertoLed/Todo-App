@@ -13,7 +13,7 @@ import Menu from './Menu/index'
 import UserMenuContainer from './Menu/MenuContainer'
 
 
-function Homepage({signOutAccount}) {
+function Homepage({signOutAccount, deleteAccount}) {
     const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
     const [todoItems, setTodoItems] = useState([])
     const [currentInput, setCurrentInput] = useState('')
@@ -226,7 +226,9 @@ function Homepage({signOutAccount}) {
                                         <FaRightToBracket className='text-[26px]' />
                                         <p>Sign out</p>
                                     </li>
-                                    <li className='flex items-end space-x-2 p-2 mb-3 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'>
+                                    <li 
+                                    className='flex items-end space-x-2 p-2 mb-3 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'
+                                    onClick={deleteAccount}>
                                         <FaXmark className='text-[26px]' />
                                         <p>Delete account</p>
                                     </li>
