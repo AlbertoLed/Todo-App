@@ -19,6 +19,11 @@ function Login({signInUser, goBack, selectSignUp}) {
     function handleLogin() {
         signInUser(formData.email, formData.pass)
     }
+    function handleEnter(e) {
+        if(e.key === "Enter") {
+            handleLogin()
+        }
+    }
 
 
     return(
@@ -34,6 +39,7 @@ function Login({signInUser, goBack, selectSignUp}) {
             placeholder="Email Address" 
             name="email"
             onChange={handleData}
+            onKeyDown={handleEnter}
             value={formData.email}
             className="mb-3 p-3 bg-violet-100 border-white border-[1px] rounded-md outline outline-transparent outline-1 focus:outline-white placeholder:text-grayish-101 max-w-[500px] mx-auto w-full" />
             <input 
@@ -41,6 +47,7 @@ function Login({signInUser, goBack, selectSignUp}) {
             placeholder="Password" 
             name="pass"
             onChange={handleData}
+            onKeyDown={handleEnter}
             value={formData.pass}
             className="mb-9 p-3 bg-violet-100 border-white border-[1px] rounded-md outline outline-transparent outline-1 focus:outline-white placeholder:text-grayish-101 max-w-[500px] mx-auto w-full" />
             
