@@ -335,14 +335,14 @@ function Homepage({signOutAccount, deleteAccount}) {
             </main>
             {/* Are you sure you want to delete your acconte message */}
             {deleteDialogue && <div className='bg-black bg-opacity-40 w-full min-h-[100vh] fixed top-0 left-0 flex items-center justify-center z-20'>
-                <div className='grid grid-cols-2 bg-slate-200 text-grayish-200 w-80 rounded-lg overflow-hidden'>
+                <div className='grid grid-cols-2 w-80 rounded-lg overflow-hidden bg-grayish-100 text-slate-100 dark:bg-slate-200 dark:text-grayish-200'>
                     <p className='col-span-2 p-5'>Are you sure you want to delete your account? This action can't be undone.</p>
                     <button 
-                    className='p-2 rounded-lg'
+                    className='p-2 rounded-lg transition-colors bg-slate-100 bg-opacity-10 hover:bg-opacity-20 dark:bg-grayish-200 dark:bg-opacity-5 dark:hover:bg-opacity-20'
                     onClick={toggleDeleteDialogue}
                     >Cancel</button>
                     <button 
-                    className='p-2 rounded-lg bg-red-600 bg-opacity-50 hover:bg-opacity-75'
+                    className='p-2 rounded-lg transition-colors text-grayish-100 bg-red-500 bg-opacity-100 hover:bg-opacity-90 dark:bg-red-600 dark:bg-opacity-50 dark:hover:bg-opacity-75'
                     onClick={deleteAccount}
                     >Delete</button>
                 </div>
