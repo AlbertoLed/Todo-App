@@ -19,6 +19,7 @@ function Homepage({signOutAccount, deleteAccount}) {
     const [currentInput, setCurrentInput] = useState('')
     const [filterSettings, setFilterSettings] = useState({all: true, active: false, completed: false})
     const [activeId, setActiveId] = useState(null)
+    const [deleteDialogue, setDeleteDialogue] = useState(false)
     const touchSensor = useSensor(TouchSensor)
     const mouseSensor = useSensor(MouseSensor)
     const sensors = useSensors(
@@ -78,6 +79,7 @@ function Homepage({signOutAccount, deleteAccount}) {
         case 'completed': setFilterSettings({all: false, active: false, completed: true})
         }
     }
+    const toggleDeleteDialogue = () => setDeleteDialogue(prev => !prev)
     // Delete all completed todos
     async function clearCompleted() {
         const completedItems = todoItems.filter(item => item.isCompleted)
@@ -228,7 +230,7 @@ function Homepage({signOutAccount, deleteAccount}) {
                                     </li>
                                     <li 
                                     className='flex items-end space-x-2 p-2 mb-3 mx-3 rounded-md hover:bg-gray-200 hover:cursor-pointer dark:hover:bg-slate-100'
-                                    onClick={deleteAccount}>
+                                    onClick={toggleDeleteDialogue}>
                                         <FaXmark className='text-[26px]' />
                                         <p>Delete account</p>
                                     </li>
@@ -331,6 +333,21 @@ function Homepage({signOutAccount, deleteAccount}) {
                 <p className="text-sm text-center text-grayish-104 dark:text-grayish-204 mt-11">Drag and drop to reorder list</p>
             </div>
             </main>
+            {/* Are you sure you want to delete your acconte message */}
+            {deleteDialogue && <div className='bg-black bg-opacity-40 w-full min-h-[100vh] fixed top-0 left-0 flex items-center justify-center z-20'>
+                <div className='grid grid-cols-2 bg-slate-200 text-grayish-200 w-80 rounded-lg overflow-hidden'>
+                    <p className='col-span-2 p-5'>Are you sure you want to delete your account? This action can't be undone.</p>
+                    <button 
+                    className='p-2 rounded-lg'
+                    onClick={toggleDeleteDialogue}
+                    >Cancel</button>
+                    <button 
+                    className='p-2 rounded-lg bg-red-600 bg-opacity-50 hover:bg-opacity-75'
+                    onClick={deleteAccount}
+                    >Delete</button>
+                </div>
+                
+            </div>}
         </div>
     )
 }
