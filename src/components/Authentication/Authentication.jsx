@@ -1,27 +1,79 @@
-import { useState } from "react"
-import AuthenticationOption from "./AuthenticationOption"
-import SignUp from "./SignUp"
-import Login from "./Login"
+import { useState, useEffect, createContext } from 'react'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from 'firebase/auth'
+import { auth } from '../../firebase'
+import { useNavigate } from 'react-router-dom'
 
-function Authentication({createUser, signInUser}) {
-    const [loginSelected, setLoginSelected] = useState(null)
+const AuthenticationContext = createContext()
 
-    const selectLogin = () => setLoginSelected(true)
-    const selectSignUp = () => setLoginSelected(false)
-    const goBack = () => setLoginSelected(null)
+function Authentication({children}) {
+    const [isLogedIn, setIsLogedIn] = useState(null)
+    const navigate = useNavigate()
+
+    // Check login
+    useEffect(() => {
+        onAuthStateChanged(auth, (data) => {
+        if(data) {
+            // console.log('login')
+            // console.log(data)
+            setIsLogedIn(true)
+        }
+        else {
+            setIsLogedIn(false)
+            // console.log('NOT login')
+        }
+        })
+    }, [])
+
+    // Create user in firebase
+    async function createUser(email, password) {
+        try {
+        const res = await createUserWithEmailAndPassword(auth, email, password)
+        navigate("/Todo-App/")
+        // console.log(res)
+        } catch(error) {
+        // console.log(error)
+        }
+    }
+    // Login user
+    async function signInUser(email, password) {
+        try {
+        const res = await signInWithEmailAndPassword(auth, email, password)
+        navigate("/Todo-App/")
+        // console.log(res)
+        }
+        catch(error) {
+        // console.log(error)
+        }
+    }
+
+    // Sign out
+    function signOutAccount() {
+        signOut(auth)
+    }
+
+    // Delete user
+    async function deleteAccount() {
+        const user = auth.currentUser
+        try {
+        const res = await deleteUser(user)
+        console.log(res)
+
+        } 
+        catch(error) {
+        console.log(error)
+        }
+    }
 
     return(
-        <div className="min-h-[100vh] bg-gradient-to-b from-violet-200 to-dark-sky text-white flex flex-col px-7 justify-center">
-            {loginSelected === null ? 
-            <AuthenticationOption
-            selectLogin={selectLogin}
-            selectSignUp={selectSignUp}
-            /> : 
-            loginSelected ? <Login signInUser={signInUser} goBack={goBack} selectSignUp={selectSignUp} /> : <SignUp createUser={createUser} goBack={goBack} selectLogin={selectLogin} />
-
-            }
-        </div>
+        <>
+        <AuthenticationContext.Provider 
+        value={{isLogedIn, createUser, signInUser, signOutAccount, deleteAccount}}>
+            {children}
+        </AuthenticationContext.Provider>
+        </>
+        
     )
 }
 
 export default Authentication
+export { AuthenticationContext }

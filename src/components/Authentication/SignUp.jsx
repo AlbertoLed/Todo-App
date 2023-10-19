@@ -1,14 +1,17 @@
-import { useState } from "react"
-import { IconContext } from "react-icons"
-import { FaAngleLeft } from "react-icons/fa6"
+import { useState, useContext } from "react"
+import { AuthenticationContext } from "./Authentication"
+import { useNavigate } from "react-router-dom"
 
-function SignUp({createUser, goBack, selectLogin}) {
+function SignUp() {
+    const {createUser} = useContext(AuthenticationContext)
+    const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         email: "",
         pass: "",
         secondPass: ""
     })
-    console.log(formData)
+    // console.log(formData)
 
     function handleData(event) {
         const {name, value} = event.target
@@ -30,12 +33,11 @@ function SignUp({createUser, goBack, selectLogin}) {
             handleSignUp()
         }
     }
+    
+    const selectLogin = () => navigate("/Todo-App/login/")
 
     return(
-        <>
-            <IconContext.Provider value={{size:"35px", className:"mt-7 hover:cursor-pointer"}}>
-                <FaAngleLeft onClick={goBack} />
-            </IconContext.Provider>
+        <main className="min-h-[100vh] bg-gradient-to-b from-violet-200 to-dark-sky text-white flex flex-col px-7 justify-center">
 
             <h1 className="text-3xl mb-9 mt-auto text-center flex flex-col leading-10 max-w-[500px] mx-auto w-full md:text-5xl"><span className="font-bold">Create Accout</span> <span>to get started now!</span></h1>
             <p className="mb-3">We are happy to see you here.</p>
@@ -68,7 +70,7 @@ function SignUp({createUser, goBack, selectLogin}) {
             onClick={handleSignUp}
             >Sign Up</button>
             <p className="mt-auto mb-12 text-center max-w-[500px] mx-auto w-full">Already have an account? <span className="font-bold hover:cursor-pointer" onClick={selectLogin}>Login Now</span></p>
-        </>
+        </main>
     )
 }
 

@@ -1,19 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { onSnapshot, addDoc, doc, setDoc, writeBatch } from 'firebase/firestore'
 import { todoCollection, db } from '../firebase'
 import Task from './Task'
 import Filter from './Filter'
-import moonIcon from '../../public/images/icon-moon.svg'
-import sunIcon from '../../public/images/icon-sun.svg'
 import { FaCircleUser , FaRightToBracket, FaXmark, FaSun, FaMoon } from "react-icons/fa6"
 import { IconContext } from "react-icons"
 import Menu from './Menu/index'
-import UserMenuContainer from './Menu/MenuContainer'
+import { AuthenticationContext } from './Authentication/Authentication'
 
 
-function Homepage({signOutAccount, deleteAccount}) {
+function Homepage() {
     const [isDarkThemeOn, setIsDarkThemeOn] = useState((/true/).test(localStorage.getItem("todoDarkTheme")) || false)
     const [todoItems, setTodoItems] = useState([])
     const [currentInput, setCurrentInput] = useState('')
@@ -26,6 +24,7 @@ function Homepage({signOutAccount, deleteAccount}) {
         touchSensor,
         mouseSensor
         )
+    const {signOutAccount, deleteAccount} = useContext(AuthenticationContext)
 
     // Get the todo items from firebase
     useEffect(() => {
@@ -182,7 +181,7 @@ function Homepage({signOutAccount, deleteAccount}) {
         'dark:md:bg-[url("./assets/bg-desktop-dark.jpg")]'
 
     return(
-        <div className={`font-jos overflow-hidden ${isDarkThemeOn && `dark`}`}>
+        <main className={`font-jos overflow-hidden ${isDarkThemeOn && `dark`}`}>
             <main className='bg-grayish-100 dark:bg-slate-202 min-h-[100vh] grid grid-cols-1 grid-rows-1'>
 
             {/* background image */}
@@ -348,7 +347,7 @@ function Homepage({signOutAccount, deleteAccount}) {
                 </div>
                 
             </div>}
-        </div>
+        </main>
     )
 }
 
