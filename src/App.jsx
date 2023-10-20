@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Authentication>
           <Routes> 
-            <Route  element={<AuthRequired />} > 
+            <Route element={<AuthRequired />} > 
               <Route path="/Todo-App/" element={<Homepage />} />
             </Route>
             <Route path="/Todo-App/login/" element={<Login />} />

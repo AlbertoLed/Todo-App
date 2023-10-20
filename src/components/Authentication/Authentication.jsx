@@ -7,6 +7,7 @@ const AuthenticationContext = createContext()
 
 function Authentication({children}) {
     const [isLogedIn, setIsLogedIn] = useState(null)
+    const [email, setEmail] = useState('')
     const navigate = useNavigate()
 
     // Check login
@@ -14,8 +15,8 @@ function Authentication({children}) {
         onAuthStateChanged(auth, (data) => {
         if(data) {
             // console.log('login')
-            // console.log(data)
             setIsLogedIn(true)
+            setEmail(data.reloadUserInfo.email)
         }
         else {
             setIsLogedIn(false)
@@ -67,7 +68,7 @@ function Authentication({children}) {
     return(
         <>
         <AuthenticationContext.Provider 
-        value={{isLogedIn, createUser, signInUser, signOutAccount, deleteAccount}}>
+        value={{isLogedIn, email, createUser, signInUser, signOutAccount, deleteAccount}}>
             {children}
         </AuthenticationContext.Provider>
         </>

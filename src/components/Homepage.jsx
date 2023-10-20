@@ -24,7 +24,7 @@ function Homepage() {
         touchSensor,
         mouseSensor
         )
-    const {signOutAccount, deleteAccount} = useContext(AuthenticationContext)
+    const {signOutAccount, deleteAccount, email} = useContext(AuthenticationContext)
 
     // Get the todo items from firebase
     useEffect(() => {
@@ -209,7 +209,7 @@ function Homepage() {
                             <div className='absolute z-20 right-0 top-10 w-[270px] flex flex-col bg-white text-grayish-108 text-base rounded-lg shadow-lg shadow-grayish-104 dark:shadow-slate-202 dark:bg-slate-200 dark:text-grayish-202'>
                                 <div className='flex items-end space-x-2 p-2 mt-3 mx-3 rounded-md'>
                                     <FaCircleUser className='text-[26px]' />
-                                    <p>alberto@gmail.com</p>
+                                    <p>{email}</p>
                                 </div>
                                 <div className='h-px w-full my-2 bg-grayish-102 dark:bg-grayish-208'></div>
                                 <div 
