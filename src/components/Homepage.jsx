@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
-import { onSnapshot, addDoc, doc, setDoc, writeBatch } from 'firebase/firestore'
+import { onSnapshot, addDoc, doc, setDoc, writeBatch, query, where, QueryConstraint } from 'firebase/firestore'
 import { todoCollection, db } from '../firebase'
 import Task from './Task'
 import Filter from './Filter'
@@ -18,6 +18,7 @@ function Homepage() {
     const [filterSettings, setFilterSettings] = useState({all: true, active: false, completed: false})
     const [activeId, setActiveId] = useState(null)
     const [deleteDialogue, setDeleteDialogue] = useState(false)
+    const [currentDocId, setCurrentDocId] = useState(null)
     const touchSensor = useSensor(TouchSensor)
     const mouseSensor = useSensor(MouseSensor)
     const sensors = useSensors(
@@ -28,12 +29,45 @@ function Homepage() {
 
     // Get the todo items from firebase
     useEffect(() => {
-        const unsubscribe = onSnapshot(todoCollection, snapshot => {
-        const todoList = snapshot.docs.map(doc => ({
-            ...doc.data(),
-            id: doc.id
-        }))
-        setTodoItems(todoList.sort((a, b) => b.order - a.order))
+        // const unsubscribe = onSnapshot(todoCollection, snapshot => {
+        //     console.log(snapshot.docs)
+        // const todoList = snapshot.docs.map(doc => ({
+        //     ...doc.data(),
+        //     id: doc.id
+        // }))
+        // setTodoItems(todoList.sort((a, b) => b.order - a.order))
+        // })
+
+        // Set query settings
+        const q = query(todoCollection, where("email", "==", email))
+
+        // Set realtime snapshot
+        const unsubscribe = onSnapshot(q, snapshot => {
+
+            try{ 
+                // Get the todo items
+                const todoList = JSON.parse(snapshot.docs[0].data().todo)
+                
+                // Set the ID of the current doc
+                setCurrentDocId(snapshot.docs[0].id)
+
+                // Sort the todo items
+                setTodoItems(todoList.sort((a, b) => b.order - a.order))
+            }
+            catch(error) {
+                console.log(error.message)
+                // If there is no doc for the user then create the doc
+                if(error.message === "snapshot.docs[0] is undefined") {
+                    const doc = {
+                                email: email,
+                                todo: "",
+                            }
+                    addDoc(todoCollection, doc)
+                }
+
+                // Set the ID of the current doc
+                setCurrentDocId(snapshot.docs[0].id)
+            }   
         })
 
         return unsubscribe
@@ -45,13 +79,29 @@ function Homepage() {
 
     // Set a new todo item in firebase
     async function createNewTodoItem() {
+
+        const docRef = doc(db, 'todo', currentDocId)
+
+        console.log(todoItems)
         const todo = {
         description: currentInput,
         isCompleted: false,
         order: todoItems.length
         }
 
-        await addDoc(todoCollection, todo)
+        const newItems = [todo, ...todoItems]
+        console.log(newItems)
+
+        // const doc = {
+        //     email: email,
+        //     todo: JSON.stringify(newItems),
+        // }
+
+        await setDoc(docRef, { todo: JSON.stringify(newItems) }, { merge: true })
+
+
+        // const res = await addDoc(todoCollection, doc)
+        // console.log(res)
     }
 
     // Handle events
