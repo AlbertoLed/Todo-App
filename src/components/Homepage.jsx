@@ -139,8 +139,6 @@ function Homepage() {
         // Get the doc ref
         const docRef = doc(db, 'todo', currentDocId)
 
-        // const batch = writeBatch(db)
-
         // Get the index of the item to delete
         const itemToDeleteIndex = todoItems.findIndex(item => item.order === todoOrder)
 
@@ -155,9 +153,19 @@ function Homepage() {
         await setDoc(docRef, { todo: JSON.stringify(orderedTodoItems) }, { merge: true })
     }
     // Toggle isCompleted property in firebase
-    async function toggleIsCompleted(todoId, isCompleted) {
-        const docRef = doc(db, 'todo', todoId)
-        await setDoc(docRef, { isCompleted: !isCompleted }, { merge: true })
+    async function toggleIsCompleted(todoOrder, isCompleted) {
+        // Get the doc ref
+        const docRef = doc(db, 'todo', currentDocId)
+
+        // Get the index of the item to delete
+        const itemToModify = todoItems.findIndex(item => item.order === todoOrder)
+        
+        // Mark as complete the todo item
+        const newTodoItems = todoItems
+        newTodoItems[itemToModify] = {...newTodoItems[itemToModify], isCompleted: !isCompleted}
+
+        // Add the new array to the collection's doc
+        await setDoc(docRef, { todo: JSON.stringify(newTodoItems) }, { merge: true })
     }
     // Reorder with Drag n Drop
     async function handleDragEnd(e) {
