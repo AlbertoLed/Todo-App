@@ -27,17 +27,10 @@ function Homepage() {
         )
     const {signOutAccount, deleteAccount, email} = useContext(AuthenticationContext)
 
+    console.log(todoItems)
+
     // Get the todo items from firebase
     useEffect(() => {
-        // const unsubscribe = onSnapshot(todoCollection, snapshot => {
-        //     console.log(snapshot.docs)
-        // const todoList = snapshot.docs.map(doc => ({
-        //     ...doc.data(),
-        //     id: doc.id
-        // }))
-        // setTodoItems(todoList.sort((a, b) => b.order - a.order))
-        // })
-
         // Set query settings
         const q = query(todoCollection, where("email", "==", email))
 
@@ -55,7 +48,6 @@ function Homepage() {
                 setTodoItems(todoList.sort((a, b) => b.order - a.order))
             }
             catch(error) {
-                console.log(error.message)
                 // If there is no doc for the user then create the doc
                 if(error.message === "snapshot.docs[0] is undefined") {
                     const doc = {
@@ -64,7 +56,6 @@ function Homepage() {
                             }
                     addDoc(todoCollection, doc)
                 }
-
                 // Set the ID of the current doc
                 setCurrentDocId(snapshot.docs[0].id)
             }   
@@ -79,29 +70,21 @@ function Homepage() {
 
     // Set a new todo item in firebase
     async function createNewTodoItem() {
-
+        // Get the doc ref
         const docRef = doc(db, 'todo', currentDocId)
 
-        console.log(todoItems)
-        const todo = {
+        // Create the note object
+        const note = {
         description: currentInput,
         isCompleted: false,
         order: todoItems.length
         }
 
-        const newItems = [todo, ...todoItems]
-        console.log(newItems)
+        // Create a new todoItems array with the new note
+        const newTodoItems = [note, ...todoItems]
 
-        // const doc = {
-        //     email: email,
-        //     todo: JSON.stringify(newItems),
-        // }
-
-        await setDoc(docRef, { todo: JSON.stringify(newItems) }, { merge: true })
-
-
-        // const res = await addDoc(todoCollection, doc)
-        // console.log(res)
+        // Add the new array to the collection's doc
+        await setDoc(docRef, { todo: JSON.stringify(newTodoItems) }, { merge: true })
     }
 
     // Handle events
@@ -152,21 +135,24 @@ function Homepage() {
         }
     }
     // Delte todo item in firebase
-    async function deleteTodo(todoId) {
-        const batch = writeBatch(db)
+    async function deleteTodo(todoOrder) {
+        // Get the doc ref
+        const docRef = doc(db, 'todo', currentDocId)
 
-        const deletedItemIndex = todoItems.findIndex(item => item.id === todoId)
-        const reorderItems = todoItems.slice(0, deletedItemIndex + 1)
-        const docRefs = reorderItems.map(item => doc(db, 'todo', item.id))
-        for(let i = 0; i < docRefs.length; i++) {
-        if(i + 1 === docRefs.length) {
-            batch.delete(docRefs[i])
-        }
-        else {
-            batch.update(docRefs[i], { order: reorderItems[i].order - 1 })
-        }
-        }
-        await batch.commit()
+        // const batch = writeBatch(db)
+
+        // Get the index of the item to delete
+        const itemToDeleteIndex = todoItems.findIndex(item => item.order === todoOrder)
+
+        // Create a copy of the todoItems without the deleted item
+        const splicedTodoItems = todoItems.toSpliced(itemToDeleteIndex, 1)
+
+        // Modify the order property of every todo item
+        // If the order is > than the order of the deleted noted, set order = order - 1
+        const orderedTodoItems = splicedTodoItems.map(item => item.order > todoOrder ? { ...item, order: item.order - 1 } : item)
+
+        // Add the new array to the collection's doc
+        await setDoc(docRef, { todo: JSON.stringify(orderedTodoItems) }, { merge: true })
     }
     // Toggle isCompleted property in firebase
     async function toggleIsCompleted(todoId, isCompleted) {
@@ -342,13 +328,13 @@ function Homepage() {
                     .map(task => (
                         // Render task components
                         <Task 
-                        key={task.id}
-                        id={task.id}
+                        key={task.order}
+                        id={task.order}
                         description={task.description}
                         isCompleted={task.isCompleted}
-                        deleteTodo={() => deleteTodo(task.id)}
-                        toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
-                        isActived={activeId === task.id ? true : false}
+                        deleteTodo={() => deleteTodo(task.order)}
+                        toggleIsCompleted={() => toggleIsCompleted(task.order, task.isCompleted)}
+                        isActived={activeId === task.order ? true : false}
                         />
                     ))}
                     </SortableContext>
