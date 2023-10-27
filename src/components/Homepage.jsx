@@ -159,7 +159,7 @@ function Homepage() {
         const docRef = doc(db, 'todo', currentDocId)
 
         // Get the index of the item to delete
-        const itemToModify = todoItems.findIndex(item => item.order === todoOrder)
+        const itemToModify = todoItems.findIndex(item => item.id === todoOrder)
         
         // Mark as complete the todo item
         const newTodoItems = todoItems
