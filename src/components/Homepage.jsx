@@ -45,7 +45,8 @@ function Homepage() {
                 setCurrentDocId(snapshot.docs[0].id)
 
                 // Sort the todo items
-                setTodoItems(todoList.sort((a, b) => b.order - a.order))
+                setTodoItems(todoList)
+                // setTodoItems(todoList.sort((a, b) => b.order - a.order))
             }
             catch(error) {
                 // If there is no doc for the user then create the doc
@@ -170,46 +171,27 @@ function Homepage() {
     // Reorder with Drag n Drop
     async function handleDragEnd(e) {
         const {active, over} = e
+        console.log(active)
 
         if(active.id !== over.id) {
-        const oldIndex = todoItems.findIndex(item => item.id === active.id)
-        const newIndex = todoItems.findIndex(item => item.id === over.id)
+            // Get the doc ref
+            const docRef = doc(db, 'todo', currentDocId)
 
-        // This part updates the todo items state 
-        // Without this the animation effect is ugly, son don't remove
-        setTodoItems(prevTodoItems => {
-            return arrayMove(prevTodoItems, oldIndex, newIndex)
-        })
+            const oldIndex = todoItems.findIndex(item => item.id === active.id)
+            const newIndex = todoItems.findIndex(item => item.id === over.id)
+            console.log(oldIndex)
+            console.log(newIndex)
 
-        // This part updates the firabes
-        const batch = writeBatch(db)
-        if(oldIndex < newIndex) {
-            const reorderItems = todoItems.slice(oldIndex, newIndex + 1)
-            const docRefs = reorderItems.map(item => doc(db, 'todo', item.id))
+            const newTodoItems = arrayMove(todoItems, oldIndex, newIndex)
+            console.log(newTodoItems)
 
-            for(let i = 0; i <= newIndex - oldIndex; i++) {
-            if(i === 0) {
-                batch.update(docRefs[i], { order: todoItems[newIndex].order })
-            }
-            else {
-                batch.update(docRefs[i], { order: todoItems[oldIndex + i - 1].order })
-            }
-            }
-        }
-        else {
-            const reorderItems = todoItems.slice(newIndex, oldIndex + 1)
-            const docRefs = reorderItems.map(item => doc(db, 'todo', item.id))
+            // This part updates the todo items state 
+            // Without this the animation effect is ugly, son don't remove
+            setTodoItems(newTodoItems)
 
-            for(let i = 0; i <= oldIndex - newIndex; i++) {
-            if(i === oldIndex - newIndex) {
-                batch.update(docRefs[i], { order: todoItems[newIndex].order })
-            }
-            else {
-                batch.update(docRefs[i], { order: todoItems[newIndex + i + 1].order })
-            }
-            }
-        }
-        await batch.commit()
+            // Add the new array to the collection's doc
+            const res = await setDoc(docRef, { todo: JSON.stringify(newTodoItems) }, { merge: true })
+            console.log(res)
         }
         setActiveId(null)
     }
@@ -336,13 +318,13 @@ function Homepage() {
                     .map(task => (
                         // Render task components
                         <Task 
-                        key={task.order}
-                        id={task.order}
+                        key={task.id}
+                        id={task.id}
                         description={task.description}
                         isCompleted={task.isCompleted}
-                        deleteTodo={() => deleteTodo(task.order)}
-                        toggleIsCompleted={() => toggleIsCompleted(task.order, task.isCompleted)}
-                        isActived={activeId === task.order ? true : false}
+                        deleteTodo={() => deleteTodo(task.id)}
+                        toggleIsCompleted={() => toggleIsCompleted(task.id, task.isCompleted)}
+                        isActived={activeId === task.id ? true : false}
                         />
                     ))}
                     </SortableContext>
