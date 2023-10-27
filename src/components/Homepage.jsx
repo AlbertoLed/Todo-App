@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { DndContext, closestCenter, TouchSensor, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
+import { nanoid } from 'nanoid'
 import { onSnapshot, addDoc, doc, setDoc, writeBatch, query, where, QueryConstraint } from 'firebase/firestore'
 import { todoCollection, db } from '../firebase'
 import Task from './Task'
@@ -49,6 +50,8 @@ function Homepage() {
                 // setTodoItems(todoList.sort((a, b) => b.order - a.order))
             }
             catch(error) {
+                // console.log(error)
+
                 // If there is no doc for the user then create the doc
                 if(error.message === "snapshot.docs[0] is undefined") {
                     const doc = {
@@ -78,7 +81,7 @@ function Homepage() {
         const note = {
         description: currentInput,
         isCompleted: false,
-        order: todoItems.length
+        id: nanoid()
         }
 
         // Create a new todoItems array with the new note
@@ -136,30 +139,30 @@ function Homepage() {
         }
     }
     // Delte todo item in firebase
-    async function deleteTodo(todoOrder) {
+    async function deleteTodo(todoID) {
         // Get the doc ref
         const docRef = doc(db, 'todo', currentDocId)
 
         // Get the index of the item to delete
-        const itemToDeleteIndex = todoItems.findIndex(item => item.order === todoOrder)
+        const itemToDeleteIndex = todoItems.findIndex(item => item.id === todoID)
 
         // Create a copy of the todoItems without the deleted item
         const splicedTodoItems = todoItems.toSpliced(itemToDeleteIndex, 1)
 
         // Modify the order property of every todo item
         // If the order is > than the order of the deleted noted, set order = order - 1
-        const orderedTodoItems = splicedTodoItems.map(item => item.order > todoOrder ? { ...item, order: item.order - 1 } : item)
+        // const orderedTodoItems = splicedTodoItems.map(item => item.order > todoID ? { ...item, order: item.order - 1 } : item)
 
         // Add the new array to the collection's doc
-        await setDoc(docRef, { todo: JSON.stringify(orderedTodoItems) }, { merge: true })
+        await setDoc(docRef, { todo: JSON.stringify(splicedTodoItems) }, { merge: true })
     }
     // Toggle isCompleted property in firebase
-    async function toggleIsCompleted(todoOrder, isCompleted) {
+    async function toggleIsCompleted(todoID, isCompleted) {
         // Get the doc ref
         const docRef = doc(db, 'todo', currentDocId)
 
         // Get the index of the item to delete
-        const itemToModify = todoItems.findIndex(item => item.id === todoOrder)
+        const itemToModify = todoItems.findIndex(item => item.id === todoID)
         
         // Mark as complete the todo item
         const newTodoItems = todoItems
@@ -171,7 +174,6 @@ function Homepage() {
     // Reorder with Drag n Drop
     async function handleDragEnd(e) {
         const {active, over} = e
-        console.log(active)
 
         if(active.id !== over.id) {
             // Get the doc ref
@@ -179,11 +181,8 @@ function Homepage() {
 
             const oldIndex = todoItems.findIndex(item => item.id === active.id)
             const newIndex = todoItems.findIndex(item => item.id === over.id)
-            console.log(oldIndex)
-            console.log(newIndex)
 
             const newTodoItems = arrayMove(todoItems, oldIndex, newIndex)
-            console.log(newTodoItems)
 
             // This part updates the todo items state 
             // Without this the animation effect is ugly, son don't remove
@@ -191,7 +190,7 @@ function Homepage() {
 
             // Add the new array to the collection's doc
             const res = await setDoc(docRef, { todo: JSON.stringify(newTodoItems) }, { merge: true })
-            console.log(res)
+            // console.log(res)
         }
         setActiveId(null)
     }
