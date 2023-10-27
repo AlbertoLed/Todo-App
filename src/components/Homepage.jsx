@@ -118,25 +118,14 @@ function Homepage() {
     const toggleDeleteDialogue = () => setDeleteDialogue(prev => !prev)
     // Delete all completed todos
     async function clearCompleted() {
-        const completedItems = todoItems.filter(item => item.isCompleted)
-        if(completedItems.length !== 0) {
-        const batch = writeBatch(db)
+        // Get the doc ref
+        const docRef = doc(db, 'todo', currentDocId)
 
-        // Delete completed todos
-        const completedDocRefs = completedItems.map(item => doc(db, 'todo', item.id))
-        completedDocRefs.forEach(docRef => batch.delete(docRef))
+        // Get the an array without the completed items
+        const activeTodoItems = todoItems.filter(item => !item.isCompleted)
 
-        // Reorder uncompleted todos
-        const uncompletedItems = todoItems.filter(item => !item.isCompleted)
-        const uncompletedDocRefs = uncompletedItems.map(item => doc(db, 'todo', item.id))
-        let order = uncompletedDocRefs.length - 1;
-        uncompletedDocRefs.forEach(docRef => {
-            batch.update(docRef, {order: order})
-            order--
-        })
-
-        await batch.commit()
-        }
+        // Add the new array to the collection's doc
+        await setDoc(docRef, { todo: JSON.stringify(activeTodoItems) }, { merge: true })
     }
     // Delte todo item in firebase
     async function deleteTodo(todoID) {
@@ -148,10 +137,6 @@ function Homepage() {
 
         // Create a copy of the todoItems without the deleted item
         const splicedTodoItems = todoItems.toSpliced(itemToDeleteIndex, 1)
-
-        // Modify the order property of every todo item
-        // If the order is > than the order of the deleted noted, set order = order - 1
-        // const orderedTodoItems = splicedTodoItems.map(item => item.order > todoID ? { ...item, order: item.order - 1 } : item)
 
         // Add the new array to the collection's doc
         await setDoc(docRef, { todo: JSON.stringify(splicedTodoItems) }, { merge: true })
