@@ -38,31 +38,35 @@ function Homepage() {
         // Set realtime snapshot
         const unsubscribe = onSnapshot(q, snapshot => {
 
-            try{ 
+            if(typeof snapshot.docs[0] === 'undefined') {
+                // If snapshot.docs[0] is undefined that means this is a new user
+                // So create the doc with the array of notes
+                const doc = {
+                    email: email,
+                    todo: "",
+                }
+                addDoc(todoCollection, doc)
+                // console.log("docs is undefined")
+            } 
+            else if(snapshot.docs[0].data().todo !== '') {
+                // Whether the data is not an empty string
+                // We get de doc with the array of notes
+
                 // Get the todo items
                 const todoList = JSON.parse(snapshot.docs[0].data().todo)
+                console.log()
+
+                // Save the todo items in an state
+                setTodoItems(todoList)  
                 
-                // Set the ID of the current doc
-                setCurrentDocId(snapshot.docs[0].id)
-
-                // Sort the todo items
-                setTodoItems(todoList)
-                // setTodoItems(todoList.sort((a, b) => b.order - a.order))
+                // console.log("everything is fine")
             }
-            catch(error) {
-                // console.log(error)
-
-                // If there is no doc for the user then create the doc
-                if(error.message === "snapshot.docs[0] is undefined") {
-                    const doc = {
-                                email: email,
-                                todo: "",
-                            }
-                    addDoc(todoCollection, doc)
-                }
-                // Set the ID of the current doc
-                setCurrentDocId(snapshot.docs[0].id)
-            }   
+            else {
+                // console.log("doc is an empty string")
+            } 
+            
+            // Set the ID of the current doc
+            setCurrentDocId(snapshot.docs[0].id)  
         })
 
         return unsubscribe
