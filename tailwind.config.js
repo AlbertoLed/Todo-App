@@ -48,7 +48,14 @@ export default {
           100: '#7d72cf',
           200: '#9a57d4'
         },
-        'dark-sky': '#5785d4'
+        'dark-sky': '#5785d4',
+        auth: {
+          bg: '#ebe9f4',
+          card: '#F8F8FD',
+          blue: '#5785D4',
+          gray: '#717D93',
+          slate: '#384252'
+        }
       },
       screens: {
         'md': '633px'
