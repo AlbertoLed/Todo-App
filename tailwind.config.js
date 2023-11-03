@@ -53,8 +53,10 @@ export default {
           bg: '#ebe9f4',
           card: '#F8F8FD',
           blue: '#5785D4',
+          'blue-h': '#6a99eb',
           gray: '#717D93',
-          slate: '#384252'
+          slate: '#384252',
+          'slate-h': '#55698b',
         }
       },
       screens: {
