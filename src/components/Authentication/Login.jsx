@@ -36,16 +36,16 @@ function Login() {
     return(
         <main className="font-jos min-h-[100vh] bg-auth-bg text-white flex flex-col justify-center items-center">
             {/* Card */}
-            <div className="flex flex-col w-[90%] max-w-[630px] min-h-[754px] max-h-[800px] h-[90vh] my-5 bg-auth-card rounded-2xl shadow-lg shadow-grayish-104 lg:flex-row-reverse lg:h-[700px] lg:max-w-[1160px]">
+            <div className="flex flex-col w-[90%] max-w-[630px] min-h-[754px] max-h-[800px] h-[90vh] my-5 bg-auth-card rounded-2xl shadow-lg shadow-grayish-104 lg:flex-row-reverse lg:h-[700px] lg:min-h-[700px] lg:max-w-[1160px]">
                 {/* H1 and Background image */}
                 <div className={`${bgImage} h-[271px] flex items-center justify-center rounded-2xl lg:h-full lg:w-1/2`}>
                     {/* H1 only visible for small screens */}
-                    <h1 className="text-white text-4xl text-center lg:hidden flex flex-col"><span className="font-bold mb-[-15px]">Hello again,</span><span>glad to see you!</span></h1>
+                    <h1 className="text-white text-3xl text-center lg:hidden flex flex-col sm:text-4xl"><span className="font-bold mb-[-15px]">Hello again,</span><span>glad to see you!</span></h1>
                 </div>
                 {/* Form */}
                 <div className="w-5/6 max-w-[500px] self-center flex flex-col justify-center grow lg:h-full lg:w-[330px] lg:mx-auto lg:grow-0">
                     {/* H1 only visible for large screens */}
-                    <h1 className="text-auth-slate text-4xl text-center hidden lg:flex flex-col mb-[20px]"><span className="font-bold mb-[-15px]">Hello again,</span><span>glad to see you!</span></h1>
+                    <h1 className="text-auth-slate text-3xl text-center hidden lg:flex flex-col mb-[20px]"><span className="font-bold mb-[-15px]">Hello again,</span><span>glad to see you!</span></h1>
                     {/* Instruction */}
                     <p className="text-auth-slate font-bold mb-2">Log in to your account</p>
                     {/* Email input */}
@@ -73,6 +73,7 @@ function Login() {
                     onClick={handleLogin}
                     className="bg-auth-blue text-white mb-4 shadow-md shadow-grayish-104 hover:bg-auth-blue-h transition-colors text-lg"
                     >Login</Button>
+                    {/* Sign Up now */}
                     <p className="text-auth-gray">Don't have an account? <span onClick={selectSignUp} className="text-auth-blue font-bold hover:cursor-pointer hover:text-auth-blue-h transition-colors">Sign up now</span></p>
                     {/* Or text */}
                     <div className="flex justify-center items-center my-7 mt-6">
