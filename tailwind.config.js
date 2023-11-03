@@ -57,6 +57,7 @@ export default {
           gray: '#717D93',
           slate: '#384252',
           'slate-h': '#55698b',
+          silver: '#e9f1ff',
         }
       },
       screens: {

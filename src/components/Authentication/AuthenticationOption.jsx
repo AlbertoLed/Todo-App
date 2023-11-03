@@ -33,9 +33,9 @@ function AuthenticationOption() {
                     bgVoid={true}
                     onClick={selectSignUp}>Sign Up</Button>
                     {/* Or text */}
-                    <div className="flex justify-center items-center">
+                    <div className="flex justify-center items-center my-7">
                         <div className="w-20 h-[2px] bg-auth-blue"></div>
-                        <span className="mx-5 my-7 text-auth-gray text-base">Or</span>
+                        <span className="mx-5 text-auth-gray text-base">Or</span>
                         <div className="w-20 h-[2px] bg-auth-blue"></div>
                     </div>
                     {/* Continue with Google */}
