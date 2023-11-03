@@ -40,10 +40,12 @@ function Login() {
                 {/* H1 and Background image */}
                 <div className={`${bgImage} h-[271px] flex items-center justify-center rounded-2xl lg:h-full lg:w-1/2`}>
                     {/* H1 only visible for small screens */}
-                    <h1 className="text-white text-4xl text-center lg:hidden flex flex-col"><span className="font-bold">Hello again,</span><span>glad to see you!</span></h1>
+                    <h1 className="text-white text-4xl text-center lg:hidden flex flex-col"><span className="font-bold mb-[-15px]">Hello again,</span><span>glad to see you!</span></h1>
                 </div>
                 {/* Form */}
-                <div className="w-5/6 self-center flex flex-col justify-center grow lg:h-full lg:w-[330px] lg:mx-auto">
+                <div className="w-5/6 max-w-[500px] self-center flex flex-col justify-center grow lg:h-full lg:w-[330px] lg:mx-auto lg:grow-0">
+                    {/* H1 only visible for large screens */}
+                    <h1 className="text-auth-slate text-4xl text-center hidden lg:flex flex-col mb-[20px]"><span className="font-bold mb-[-15px]">Hello again,</span><span>glad to see you!</span></h1>
                     {/* Instruction */}
                     <p className="text-auth-slate font-bold mb-2">Log in to your account</p>
                     {/* Email input */}
@@ -66,8 +68,6 @@ function Login() {
                     className="h-[52.8px] rounded-lg mb-2 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue" />
                     {/* Forgot password */}
                     <p className="text-right text-auth-gray text-sm mb-3 hover:cursor-pointer">Forget password?</p>
-                    {/* H1 only visible for large screens */}
-                    <h1 className="uppercase text-auth-slate text-7xl font-bold tracking-[.1em] text-center mb-[60px] hidden lg:block">Todo</h1>
                     {/* Login Button */}
                     <Button 
                     onClick={handleLogin}
