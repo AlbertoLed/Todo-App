@@ -26,7 +26,7 @@ function SignUp() {
     async function handleSignUp() {
         if(formData.pass === formData.secondPass) {
             const res = await createUser(formData.email, formData.pass)
-            // console.log(res)
+            console.log(res)
             if(res.code === "auth/invalid-email" || res.code === "auth/missing-email") {
                 setErrorMessage("Invalid email.")
             }
@@ -35,6 +35,9 @@ function SignUp() {
             }
             else if(res.code === "auth/email-already-in-use") {
                 setErrorMessage("Email already in use.")
+            }
+            else if(res.code === "auth/weak-password") {
+                setErrorMessage("Password must be at least 6 characters.")
             }
         } 
         else {
