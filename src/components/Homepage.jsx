@@ -78,21 +78,25 @@ function Homepage() {
 
     // Set a new todo item in firebase
     async function createNewTodoItem() {
-        // Get the doc ref
-        const docRef = doc(db, 'todo', currentDocId)
+        // Verify there is a note to add
+        console.log(currentInput)
+        if(currentInput !== "") {
+            // Get the doc ref
+            const docRef = doc(db, 'todo', currentDocId)
 
-        // Create the note object
-        const note = {
-        description: currentInput,
-        isCompleted: false,
-        id: nanoid()
+            // Create the note object
+            const note = {
+            description: currentInput,
+            isCompleted: false,
+            id: nanoid()
+            }
+
+            // Create a new todoItems array with the new note
+            const newTodoItems = [note, ...todoItems]
+
+            // Add the new array to the collection's doc
+            await setDoc(docRef, { todo: JSON.stringify(newTodoItems) }, { merge: true })
         }
-
-        // Create a new todoItems array with the new note
-        const newTodoItems = [note, ...todoItems]
-
-        // Add the new array to the collection's doc
-        await setDoc(docRef, { todo: JSON.stringify(newTodoItems) }, { merge: true })
     }
 
     // Handle events
