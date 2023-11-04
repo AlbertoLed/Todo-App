@@ -58,6 +58,8 @@ export default {
           slate: '#384252',
           'slate-h': '#55698b',
           silver: '#e9f1ff',
+          'red-txt': '#e24d4d',
+          'red-bg': '#fbdddd',
         }
       },
       screens: {

@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { useState } from "react"
 import { AuthenticationContext } from "./Authentication"
 import { useNavigate } from "react-router-dom"
-import { FaGoogle } from "react-icons/fa6"
+import { FaGoogle, FaXmark } from "react-icons/fa6"
 import Button from "../Button"
 
 function Login() {
@@ -10,6 +10,7 @@ function Login() {
         email: "",
         pass: ""
     })
+    const [errorMessage, setErrorMessage] = useState("")
     const navigate = useNavigate()
     const {signInUser} = useContext(AuthenticationContext)
 
@@ -22,21 +23,28 @@ function Login() {
             [name]: value
         }))
     }
-    function handleLogin() {
-        signInUser(formData.email, formData.pass)
+    async function handleLogin() {
+        const res = await signInUser(formData.email, formData.pass)
+        // console.log(res)
+        if(res) {
+            setErrorMessage("Incorrect email or password.")
+        } 
     }
     function handleEnter(e) {
         if(e.key === "Enter") {
             handleLogin()
         }
     }
+    const closeErrorMessage = () => setErrorMessage("")
 
     const bgImage = `bg-[url("./assets/bg-auth-mobile.jpg")] bg-center bg-cover lg:bg-[url("./assets/bg-auth-desktop.jpg")]`
 
     return(
         <main className="font-jos min-h-[100vh] bg-auth-bg text-white flex flex-col justify-center items-center">
             {/* Card */}
-            <div className="flex flex-col w-[90%] max-w-[630px] min-h-[754px] max-h-[800px] h-[90vh] my-5 bg-auth-card rounded-2xl shadow-lg shadow-grayish-104 lg:flex-row-reverse lg:h-[700px] lg:min-h-[700px] lg:max-w-[1160px]">
+            <div 
+            className={`flex flex-col w-[90%] max-w-[630px] max-h-[822px] h-[90vh] my-5 bg-auth-card rounded-2xl shadow-lg shadow-grayish-104 lg:flex-row-reverse lg:h-[700px] lg:min-h-[700px] lg:max-w-[1160px]
+            ${errorMessage === '' ? 'min-h-[754px]' : 'min-h-[822px]'}`}>
                 {/* H1 and Background image */}
                 <div className={`${bgImage} h-[271px] flex items-center justify-center rounded-2xl lg:h-full lg:w-1/2`}>
                     {/* H1 only visible for small screens */}
@@ -68,6 +76,14 @@ function Login() {
                     className="h-[52.8px] rounded-lg mb-2 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue" />
                     {/* Forgot password */}
                     <p className="text-right text-auth-gray text-sm mb-3 hover:cursor-pointer">Forget password?</p>
+                    {/* Show error message if there is something wrong*/}
+                    {errorMessage !== "" && 
+                    <div className="h-[52.8px] rounded-lg mb-4 text-auth-red-txt px-5 border-auth-red-txt border-[1px] bg-auth-red-bg flex items-center justify-between">
+                        {errorMessage} 
+                        <FaXmark 
+                        className="hover:cursor-pointer"
+                        onClick={closeErrorMessage}/>
+                    </div>}
                     {/* Login Button */}
                     <Button 
                     onClick={handleLogin}

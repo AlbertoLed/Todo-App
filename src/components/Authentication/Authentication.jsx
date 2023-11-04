@@ -28,21 +28,22 @@ function Authentication({children}) {
     // Create user in firebase
     async function createUser(email, password) {
         try {
-        const res = await createUserWithEmailAndPassword(auth, email, password)
-        navigate("/Todo-App/")
+            const res = await createUserWithEmailAndPassword(auth, email, password)
+            navigate("/Todo-App/")
         } catch(error) {
-        console.log(error)
+            console.log(error)
         }
     }
     // Login user
     async function signInUser(email, password) {
         try {
-        const res = await signInWithEmailAndPassword(auth, email, password)
-        navigate("/Todo-App/")
-        // console.log(res)
+            const res = await signInWithEmailAndPassword(auth, email, password)
+            navigate("/Todo-App/")
+            // console.log(res)
         }
         catch(error) {
-        // console.log(error)
+            // console.log(error)
+            return error
         }
     }
 
@@ -55,12 +56,11 @@ function Authentication({children}) {
     async function deleteAccount() {
         const user = auth.currentUser
         try {
-        const res = await deleteUser(user)
-        console.log(res)
-
+            const res = await deleteUser(user)
+            console.log(res)
         } 
         catch(error) {
-        console.log(error)
+            console.log(error)
         }
     }
 
