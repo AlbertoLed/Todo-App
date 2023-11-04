@@ -31,7 +31,8 @@ function Authentication({children}) {
             const res = await createUserWithEmailAndPassword(auth, email, password)
             navigate("/Todo-App/")
         } catch(error) {
-            console.log(error)
+            // console.log(error)
+            return error
         }
     }
     // Login user

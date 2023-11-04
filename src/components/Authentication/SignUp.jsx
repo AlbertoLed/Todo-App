@@ -1,10 +1,11 @@
 import { useState, useContext } from "react"
 import { AuthenticationContext } from "./Authentication"
 import { useNavigate } from "react-router-dom"
-import { FaGoogle } from "react-icons/fa6"
+import { FaGoogle, FaXmark } from "react-icons/fa6"
 import Button from "../Button"
 
 function SignUp() {
+    const [errorMessage, setErrorMessage] = useState("")
     const {createUser} = useContext(AuthenticationContext)
     const navigate = useNavigate()
 
@@ -22,12 +23,22 @@ function SignUp() {
             [name]: value
         }))
     }
-    function handleSignUp() {
+    async function handleSignUp() {
         if(formData.pass === formData.secondPass) {
-            createUser(formData.email, formData.pass)
+            const res = await createUser(formData.email, formData.pass)
+            // console.log(res)
+            if(res.code === "auth/invalid-email" || res.code === "auth/missing-email") {
+                setErrorMessage("Invalid email.")
+            }
+            else if(res.code === "auth/missing-password") {
+                setErrorMessage("Missing password.")
+            }
+            else if(res.code === "auth/email-already-in-use") {
+                setErrorMessage("Email already in use.")
+            }
         } 
         else {
-            console.log('pass wrong')
+            setErrorMessage("Passwords don't match.")
         }
     }
     function handleEnter(e) {
@@ -37,47 +48,16 @@ function SignUp() {
     }
     
     const selectLogin = () => navigate("/Todo-App/login/")
+    const closeErrorMessage = () => setErrorMessage("")
 
     const bgImage = `bg-[url("./assets/bg-auth-mobile.jpg")] bg-center bg-cover lg:bg-[url("./assets/bg-auth-desktop.jpg")]`
 
     return(
-        // <main className="min-h-[100vh] bg-gradient-to-b from-violet-200 to-dark-sky text-white flex flex-col px-7 justify-center">
-
-        //     <h1 className="text-3xl mb-9 mt-auto text-center flex flex-col leading-10 max-w-[500px] mx-auto w-full md:text-5xl"><span className="font-bold">Create Accout</span> <span>to get started now!</span></h1>
-        //     <p className="mb-3">We are happy to see you here.</p>
-        //     <input 
-        //     type="email" 
-        //     placeholder="Email Address" 
-        //     name="email"
-        //     onChange={handleData}
-        //     onKeyDown={handleEnter}
-        //     value={formData.email}
-        //     className="mb-3 p-3 bg-violet-100 border-white border-[1px] rounded-md outline outline-transparent outline-1 focus:outline-white placeholder:text-grayish-101 max-w-[500px] mx-auto w-full" />
-        //     <input 
-        //     type="password" 
-        //     placeholder="Password" 
-        //     name="pass"
-        //     onChange={handleData}
-        //     onKeyDown={handleEnter}
-        //     value={formData.pass}
-        //     className="mb-3 p-3 bg-violet-100 border-white border-[1px] rounded-md outline outline-transparent outline-1 focus:outline-white placeholder:text-grayish-101 max-w-[500px] mx-auto w-full" />
-        //     <input 
-        //     type="password" 
-        //     placeholder="Confirm Password" 
-        //     name="secondPass"
-        //     onChange={handleData}
-        //     onKeyDown={handleEnter}
-        //     value={formData.secondPass}
-        //     className="mb-9 p-3 bg-violet-100 border-white border-[1px] rounded-md outline outline-transparent outline-1 focus:outline-white placeholder:text-grayish-101 max-w-[500px] mx-auto w-full" />
-        //     <button 
-        //     className="bg-white text-black font-bold p-3 rounded-md max-w-[500px] mx-auto w-full shadow-lg"
-        //     onClick={handleSignUp}
-        //     >Sign Up</button>
-        //     <p className="mt-auto mb-12 text-center max-w-[500px] mx-auto w-full">Already have an account? <span className="font-bold hover:cursor-pointer" onClick={selectLogin}>Login Now</span></p>
-        // </main>
         <main className="font-jos min-h-[100vh] bg-auth-bg text-white flex flex-col justify-center items-center">
             {/* Card */}
-            <div className="flex flex-col w-[90%] max-w-[630px] min-h-[754px] max-h-[800px] h-[90vh] my-5 bg-auth-card rounded-2xl shadow-lg shadow-grayish-104 lg:flex-row-reverse lg:h-[700px] lg:min-h-[700px] lg:max-w-[1160px]">
+            <div 
+            className={`flex flex-col w-[90%] max-w-[630px] max-h-[854px] h-[90vh] my-5 bg-auth-card rounded-2xl shadow-lg shadow-grayish-104 lg:flex-row-reverse lg:h-[700px] lg:min-h-[700px] lg:max-w-[1160px]
+            ${errorMessage === '' ? 'min-h-[786px]' : 'min-h-[854px]'}`}>
                 {/* H1 and Background image */}
                 <div className={`${bgImage} h-[271px] flex items-center justify-center rounded-2xl lg:h-full lg:w-1/2`}>
                     {/* H1 only visible for small screens */}
@@ -115,6 +95,14 @@ function SignUp() {
                     onKeyDown={handleEnter}
                     value={formData.secondPass}
                     className="h-[52.8px] rounded-lg mb-4 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue" />
+                    {/* Show error message if there is something wrong*/}
+                    {errorMessage !== "" && 
+                    <div className="h-[52.8px] rounded-lg mb-4 text-auth-red-txt px-5 border-auth-red-txt border-[1px] bg-auth-red-bg flex items-center justify-between">
+                        {errorMessage} 
+                        <FaXmark 
+                        className="hover:cursor-pointer"
+                        onClick={closeErrorMessage}/>
+                    </div>}
                     {/* Sign Up Button */}
                     <Button 
                     onClick={handleSignUp}
