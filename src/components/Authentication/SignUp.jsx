@@ -1,14 +1,14 @@
 import { useState, useContext } from "react"
 import { AuthenticationContext } from "./Authentication"
 import { useNavigate } from "react-router-dom"
-import { FaGoogle, FaXmark } from "react-icons/fa6"
+import { FaGoogle, FaXmark, FaEye, FaEyeSlash } from "react-icons/fa6"
 import Button from "../Button"
 
 function SignUp() {
     const [errorMessage, setErrorMessage] = useState("")
     const {createUser} = useContext(AuthenticationContext)
     const navigate = useNavigate()
-
+    const [passwordVisibility, setPasswordVisibility] = useState({pass: false, secondPass: false})
     const [formData, setFormData] = useState({
         email: "",
         pass: "",
@@ -26,7 +26,7 @@ function SignUp() {
     async function handleSignUp() {
         if(formData.pass === formData.secondPass) {
             const res = await createUser(formData.email, formData.pass)
-            console.log(res)
+            // console.log(res)
             if(res.code === "auth/invalid-email" || res.code === "auth/missing-email") {
                 setErrorMessage("Invalid email.")
             }
@@ -82,22 +82,39 @@ function SignUp() {
                     value={formData.email}
                     className="h-[52.8px] rounded-lg mb-4 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue" />
                     {/* Password input */}
-                    <input 
-                    type="password"
-                    placeholder="Password"
-                    name="pass"
-                    onChange={handleData}
-                    onKeyDown={handleEnter}
-                    value={formData.pass}
-                    className="h-[52.8px] rounded-lg mb-4 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue" />{/* Password input */}
-                    <input 
-                    type="password"
-                    placeholder="Confirm Password"
-                    name="secondPass"
-                    onChange={handleData}
-                    onKeyDown={handleEnter}
-                    value={formData.secondPass}
-                    className="h-[52.8px] rounded-lg mb-4 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue" />
+                    <div className="grid grid-cols-1 grid-rows-1">
+                        <input 
+                        type={passwordVisibility.pass ? "text" : "password"}
+                        placeholder="Password"
+                        name="pass"
+                        onChange={handleData}
+                        onKeyDown={handleEnter}
+                        value={formData.pass}
+                        className="h-[52.8px] rounded-lg mb-4 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue col-span-full row-span-full" />
+                        <div 
+                        onClick={() => setPasswordVisibility(prev => ({pass: !prev.pass, secondPass: prev.secondPass}))}
+                        className="col-span-full row-span-full text-auth-slate mb-4 mr-5 self-center justify-self-end hover:cursor-pointer">
+                            {passwordVisibility.pass ? <FaEyeSlash /> : <FaEye  />}
+                        </div>
+                    </div>
+                    
+                    {/* Password input */}
+                    <div className="grid grid-cols-1 grid-rows-1">
+                        <input 
+                        type={passwordVisibility.secondPass ? "text" : "password"}
+                        placeholder="Confirm Password"
+                        name="secondPass"
+                        onChange={handleData}
+                        onKeyDown={handleEnter}
+                        value={formData.secondPass}
+                        className="h-[52.8px] rounded-lg mb-4 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue col-span-full row-span-full" />
+                        <div 
+                        onClick={() => setPasswordVisibility(prev => ({pass: prev.pass, secondPass: !prev.secondPass}))}
+                        className="col-span-full row-span-full text-auth-slate mb-4 mr-5 self-center justify-self-end hover:cursor-pointer">
+                            {passwordVisibility.secondPass ? <FaEyeSlash /> : <FaEye  />}
+                        </div>
+                    </div>
+                    
                     {/* Show error message if there is something wrong*/}
                     {errorMessage !== "" && 
                     <div className="h-[52.8px] rounded-lg mb-4 text-auth-red-txt px-5 border-auth-red-txt border-[1px] bg-auth-red-bg flex items-center justify-between">
