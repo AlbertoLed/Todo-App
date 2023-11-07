@@ -15,6 +15,7 @@ function Login() {
     const { signInUser, signInWithGoogle} = useContext(AuthenticationContext)
 
     const selectSignUp = () => navigate("/Todo-App/signup/")
+    const selectForgetPassword = () => navigate("/Todo-App/password_reset/")
 
     function handleData(event) {
         const {name, value} = event.target
@@ -75,7 +76,9 @@ function Login() {
                     value={formData.pass}
                     className="h-[52.8px] rounded-lg mb-2 text-auth-slate px-5 placeholder:text-auth-gray border-auth-silver border-[1px] outline-none outline-offset-0 focus:outline-auth-blue" />
                     {/* Forgot password */}
-                    <p className="text-right text-auth-gray text-sm mb-3 hover:cursor-pointer">Forget password?</p>
+                    <p 
+                    className="text-right text-auth-gray text-sm mb-3 hover:cursor-pointer"
+                    onClick={selectForgetPassword}>Forget password?</p>
                     {/* Show error message if there is something wrong*/}
                     {errorMessage !== "" && 
                     <div className="h-[52.8px] rounded-lg mb-4 text-auth-red-txt px-5 border-auth-red-txt border-[1px] bg-auth-red-bg flex items-center justify-between">

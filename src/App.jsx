@@ -4,6 +4,7 @@ import Login from './components/Authentication/Login'
 import SignUp from './components/Authentication/SignUp'
 import Homepage from './components/Homepage'
 import AuthRequired from './components/Authentication/AuthRequired'
+import PasswordReset from './components/Authentication/PasswordReset'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             </Route>
             <Route path="/Todo-App/login/" element={<Login />} />
             <Route path="/Todo-App/signup/" element={<SignUp />} />
+            <Route path="/Todo-App/password_reset/" element={<PasswordReset />} />
           </Routes>
       </Authentication>
     </BrowserRouter>
