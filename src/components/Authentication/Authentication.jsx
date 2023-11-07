@@ -77,6 +77,7 @@ function Authentication({children}) {
         try {
             // Sign in with popup
             const res = await signInWithPopup(auth, provider)
+            navigate("/Todo-App/")
 
             // console.log(res)
             return res

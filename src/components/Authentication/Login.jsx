@@ -12,7 +12,7 @@ function Login() {
     })
     const [errorMessage, setErrorMessage] = useState("")
     const navigate = useNavigate()
-    const {signInUser} = useContext(AuthenticationContext)
+    const { signInUser, signInWithGoogle} = useContext(AuthenticationContext)
 
     const selectSignUp = () => navigate("/Todo-App/signup/")
 
@@ -99,7 +99,8 @@ function Login() {
                     </div>
                     {/* Continue with Google */}
                     <Button className="flex items-center justify-center text-auth-slate border-auth-slate border-[2px] p-2.5 hover:border-auth-slate-h hover:text-auth-slate-h transition-colors font-normal text-lg" 
-                    bgVoid={true}>
+                    bgVoid={true}
+                    onClick={signInWithGoogle}>
                         <FaGoogle className="text-xl" /> 
                         <span className="ml-2">Continue with Google</span>
                     </Button>
