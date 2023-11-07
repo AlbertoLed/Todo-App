@@ -1,9 +1,12 @@
+import { useContext } from "react"
+import { AuthenticationContext } from "./Authentication"
 import Button from "../Button"
 import { useNavigate } from "react-router-dom"
 import { FaGoogle } from "react-icons/fa6"
 
 function AuthenticationOption() {
     const navigate = useNavigate()
+    const { signInWithGoogle } = useContext(AuthenticationContext)
 
     const selectLogin = () => navigate("/Todo-App/login/")
     const selectSignUp = () => navigate("/Todo-App/signup/")
@@ -39,8 +42,10 @@ function AuthenticationOption() {
                         <div className="w-20 h-[2px] bg-auth-blue"></div>
                     </div>
                     {/* Continue with Google */}
-                    <Button className="flex items-center justify-center text-auth-slate border-auth-slate border-[2px] p-2.5 hover:border-auth-slate-h hover:text-auth-slate-h transition-colors font-normal text-lg" 
-                    bgVoid={true}>
+                    <Button 
+                    className="flex items-center justify-center text-auth-slate border-auth-slate border-[2px] p-2.5 hover:border-auth-slate-h hover:text-auth-slate-h transition-colors font-normal text-lg" 
+                    bgVoid={true}
+                    onClick={signInWithGoogle}>
                         <FaGoogle className="text-xl" /> 
                         <span className="ml-2">Continue with Google</span>
                     </Button>

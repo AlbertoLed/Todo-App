@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, reauthenticateWithCredential, reauthenticateWithPopup, EmailAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../../firebase'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,6 +8,7 @@ const AuthenticationContext = createContext()
 function Authentication({children}) {
     const [isLogedIn, setIsLogedIn] = useState(null)
     const [email, setEmail] = useState('')
+    const [providerId, setProviderId] = useState("")
     const navigate = useNavigate()
 
     // Check login
@@ -17,6 +18,7 @@ function Authentication({children}) {
             // console.log('login')
             setIsLogedIn(true)
             setEmail(data.reloadUserInfo.email)
+            setProviderId(data.reloadUserInfo.providerUserInfo[0].providerId)
         }
         else {
             setIsLogedIn(false)
@@ -67,9 +69,27 @@ function Authentication({children}) {
         }
     }
 
+    // Sign in with google 
+    async function signInWithGoogle() {
+        // Get the google auth provider
+        const provider = new GoogleAuthProvider()
+
+        try {
+            // Sign in with popup
+            const res = await signInWithPopup(auth, provider)
+
+            // console.log(res)
+            return res
+        }
+        catch(error) {
+            // If there is an error then return the error
+            return(error)
+        }
+    }
+
     // Reauthenticate
-    async function reauthenticateUser(pass) {
-        // Gete the current user
+    async function reauthenticateUserWithPassword(pass) {
+        // Get the current user
         const user = auth.currentUser
 
         // Create the credential
@@ -89,11 +109,32 @@ function Authentication({children}) {
             return error.code
         }
     }
+    async function reauthenticateUserWithGoogle() {
+        // Get the current user
+        const user = auth.currentUser
+
+        // Get the google auth provider
+        const provider = new GoogleAuthProvider()
+
+        try {
+            // Try to reauthenticate, if succeeded then return "authenticated"
+            const res = await reauthenticateWithPopup(user, provider)
+            // console.log(res)
+
+            return "authenticated"
+        }
+        catch(error) {
+            // If there is an error then return the error
+
+            // console.log(error)
+            return error
+        }
+    }
 
     return(
         <>
         <AuthenticationContext.Provider 
-        value={{isLogedIn, email, createUser, signInUser, signOutAccount, deleteAccount, reauthenticateUser}}>
+        value={{isLogedIn, email, providerId, createUser, signInUser, signOutAccount, deleteAccount, reauthenticateUserWithPassword, signInWithGoogle, reauthenticateUserWithGoogle}}>
             {children}
         </AuthenticationContext.Provider>
         </>
