@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, reauthenticateWithCredential, reauthenticateWithPopup, EmailAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, reauthenticateWithCredential, reauthenticateWithPopup, EmailAuthProvider, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail} from 'firebase/auth'
 import { auth } from '../../firebase'
 import { useNavigate } from 'react-router-dom'
 
@@ -132,10 +132,23 @@ function Authentication({children}) {
         }
     }
 
+    // Send email to reset password
+    async function resetPassword(email) {
+        try {
+            // Try to send the password reset email
+            const res = await sendPasswordResetEmail(auth, email)
+            return res
+        }
+        catch(error) {
+            // If there is an error then return the error
+            return error
+        }
+    }
+
     return(
         <>
         <AuthenticationContext.Provider 
-        value={{isLogedIn, email, providerId, createUser, signInUser, signOutAccount, deleteAccount, reauthenticateUserWithPassword, signInWithGoogle, reauthenticateUserWithGoogle}}>
+        value={{isLogedIn, email, providerId, createUser, signInUser, signOutAccount, deleteAccount, reauthenticateUserWithPassword, signInWithGoogle, reauthenticateUserWithGoogle, resetPassword}}>
             {children}
         </AuthenticationContext.Provider>
         </>
