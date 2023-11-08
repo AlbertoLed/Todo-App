@@ -44,7 +44,7 @@ export default function PasswordReset() {
                     <p className="text-auth-slate mb-2">Check your email for a link to reset your password. If it doesn’t appear within a few minutes, check your spam folder.</p>
                     {/* Return to sign in */}
                     <Button 
-                    className="border-auth-blue text-auth-blue border-[2px] p-2.5 hover:border-auth-blue-h hover:text-auth-blue-h transition-colors text-lg mb-4" 
+                    className="border-auth-blue text-auth-blue border-[2px] p-2.5 hover:border-auth-blue-h hover:text-auth-blue-h active:text-auth-blue active:border-auth-blue transition-colors text-lg mb-4" 
                     bgVoid={true}
                     onClick={selectLogin}>Return to sign in</Button>
                 </> : 
@@ -71,7 +71,7 @@ export default function PasswordReset() {
                     {/* Reset button */}
                     <Button 
                     onClick={handleSendResetPasswordEmail}
-                    className="bg-auth-blue text-white mb-4 shadow-md shadow-grayish-104 hover:bg-auth-blue-h transition-colors text-lg"
+                    className="bg-auth-blue text-white mb-4 shadow-md shadow-grayish-104 hover:bg-auth-blue-h active:bg-auth-blue transition-colors text-lg"
                     >Send password reset email</Button>
                 </>}
             </div>

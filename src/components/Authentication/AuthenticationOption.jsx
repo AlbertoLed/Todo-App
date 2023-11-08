@@ -32,7 +32,7 @@ function AuthenticationOption() {
                     onClick={selectLogin}>Login</Button>
                     {/* Sign Up button */}
                     <Button 
-                    className="border-auth-blue text-auth-blue border-[2px] p-2.5 hover:border-auth-blue-h hover:text-auth-blue-h active:bg-auth-blue transition-colors text-lg" 
+                    className="border-auth-blue text-auth-blue border-[2px] p-2.5 hover:border-auth-blue-h hover:text-auth-blue-h active:text-auth-blue active:border-auth-blue transition-colors text-lg" 
                     bgVoid={true}
                     onClick={selectSignUp}>Sign Up</Button>
                     {/* Or text */}
