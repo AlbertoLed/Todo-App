@@ -126,7 +126,7 @@ function SignUp() {
                     {/* Sign Up Button */}
                     <Button 
                     onClick={handleSignUp}
-                    className="bg-auth-blue text-white mb-4 shadow-md shadow-grayish-104 hover:bg-auth-blue-h transition-colors text-lg"
+                    className="bg-auth-blue text-white mb-4 shadow-md shadow-grayish-104 hover:bg-auth-blue-h active:bg-auth-blue transition-colors text-lg"
                     >Sign Up</Button>
                     {/* Login now */}
                     <p className="text-auth-gray">Already have an account? <span onClick={selectLogin} className="text-auth-blue font-bold hover:cursor-pointer hover:text-auth-blue-h transition-colors">Login now</span></p>
@@ -137,7 +137,7 @@ function SignUp() {
                         <div className="w-20 h-[2px] bg-auth-blue"></div>
                     </div>
                     {/* Continue with Google */}
-                    <Button className="flex items-center justify-center text-auth-slate border-auth-slate border-[2px] p-2.5 hover:border-auth-slate-h hover:text-auth-slate-h transition-colors font-normal text-lg" 
+                    <Button className="flex items-center justify-center text-auth-slate border-auth-slate border-[2px] p-2.5 hover:border-auth-slate-h hover:text-auth-slate-h active:text-auth-slate active:border-auth-slate transition-colors font-normal text-lg" 
                     bgVoid={true}
                     onClick={signInWithGoogle}>
                         <FaGoogle className="text-xl" /> 

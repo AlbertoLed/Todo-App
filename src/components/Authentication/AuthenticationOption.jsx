@@ -28,11 +28,11 @@ function AuthenticationOption() {
                     <h1 className="uppercase text-auth-slate text-7xl font-bold tracking-[.1em] text-center mb-[60px] hidden lg:block">Todo</h1>
                     {/* Login Button */}
                     <Button 
-                    className="bg-auth-blue text-white mb-4 shadow-md shadow-grayish-104 hover:bg-auth-blue-h transition-colors text-lg"
+                    className="bg-auth-blue text-white mb-4 shadow-md shadow-grayish-104 hover:bg-auth-blue-h active:bg-auth-blue transition-colors text-lg"
                     onClick={selectLogin}>Login</Button>
                     {/* Sign Up button */}
                     <Button 
-                    className="border-auth-blue text-auth-blue border-[2px] p-2.5 hover:border-auth-blue-h hover:text-auth-blue-h transition-colors text-lg" 
+                    className="border-auth-blue text-auth-blue border-[2px] p-2.5 hover:border-auth-blue-h hover:text-auth-blue-h active:bg-auth-blue transition-colors text-lg" 
                     bgVoid={true}
                     onClick={selectSignUp}>Sign Up</Button>
                     {/* Or text */}
@@ -43,7 +43,7 @@ function AuthenticationOption() {
                     </div>
                     {/* Continue with Google */}
                     <Button 
-                    className="flex items-center justify-center text-auth-slate border-auth-slate border-[2px] p-2.5 hover:border-auth-slate-h hover:text-auth-slate-h transition-colors font-normal text-lg" 
+                    className="flex items-center justify-center text-auth-slate border-auth-slate border-[2px] p-2.5 hover:border-auth-slate-h hover:text-auth-slate-h active:text-auth-slate active:border-auth-slate transition-colors font-normal text-lg" 
                     bgVoid={true}
                     onClick={signInWithGoogle}>
                         <FaGoogle className="text-xl" /> 
